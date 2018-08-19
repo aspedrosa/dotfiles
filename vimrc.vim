@@ -94,7 +94,7 @@ if has("autocmd")
 endif
 
 " TODO dont edit the real vimrc file
-nmap <leader>v :tabedit $MYVIMRC<CR>
+nmap <leader>v :tabedit ~/dotfiles/vimrc.vim<CR>
 
 "move text in file up and down (nao funcionam) alt
 nmap <A-k> ddkP
