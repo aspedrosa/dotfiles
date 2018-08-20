@@ -159,12 +159,18 @@ function parse_git_dirty {
 	fi
 }
 
-# Customize prompt (not my final form) TODO
-export PS1="\[\e[31m\u:\h\] \`parse_git_branch\` \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
+# Customize prompt (TODO not my final form)
+grep -qE "Microsoft|WSL" /proc/version
+# I disable git on prompt on windows because makes it slow as hell. I just change colors.
+if [[ $? = 0 ]] ; then
+  export PS1="\[\e[31m\u @ \h\] \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
+else
+  export PS1="\[\e[31m\u @ \h\] \`parse_git_branch\` \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
+fi
 
 # ls don't ignore '.' when sorting by name
 export LC_ALL="C"
 
-#if [[ "$TMUX" = "" ]] ; then
-#  tmux
-#fi
+if [[ "$TMUX" = "" ]] ; then
+  tmux
+fi
