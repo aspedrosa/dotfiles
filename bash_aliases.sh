@@ -31,3 +31,6 @@ alias bx="bxTimes"
 #     mkdir $1 && cd $1
 # }
 # alias mkdircd="makeAndChange"
+
+#Exit faster from terminal/bash
+alias e="exit"

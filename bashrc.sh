@@ -170,7 +170,3 @@ fi
 
 # ls don't ignore '.' when sorting by name
 export LC_ALL="C"
-
-if [[ "$TMUX" = "" ]] ; then
-  tmux
-fi

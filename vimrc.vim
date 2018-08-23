@@ -5,13 +5,6 @@ for i in range(97, 122)
   let c = nr2char(i)
   exec "set <M-".c.">=\e".c
 endfor
-" This is need because of error while exiting insert mode
-" set ttimeoutlen=10
-" augroup FastEscape
-"   autocmd!
-"   au InsertEnter * set timeoutlen=0
-"   au InsertLeave * set timeoutlen=1000
-" augroup END
 
 let mapleader = ','
 " Inserted when vundle was intalled
@@ -54,10 +47,15 @@ colorscheme gruvbox
 
 "autocmd BufRead,BufNewFile *.g4 setfiletype antlr4
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-set nowrap
+
 set number relativenumber
+
 set showcmd
-set ic hls is
+
+" Highlighting on typing, highlighting matches (don't remember what 'is' is
+"   for)
+set incsearch hlsearch is
+nmap ,h :noh<CR>
 
 nnoremap ,o  o<CR>
 nnoremap ,O  O<ESC>O
@@ -102,5 +100,25 @@ nmap <A-j> ddp
 vmap <A-k> dkP'[V']
 vmap <A-j> dp '[V']
 
-"Toogle NerdTree
+"Toggle NerdTree
 nmap <leader>n :NERDTreeToggle<CR>
+
+" move inside wrapped lines.
+nmap j gj
+nmap k gk
+nmap 0 g0
+nmap $ g$
+vmap j gj
+vmap k gk
+vmap 0 g0
+vmap $ g$
+set linebreak
+
+" When I move to the end of the file, scroll 5 lines up to see better where
+"   I'm working
+set scrolloff=5
+"If I want to go to line 49 -> 49G - BUG TODO
+nmap G G5<C-e>
+
+" Set's '~' to behave like a operator
+set tildeop
