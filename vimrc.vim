@@ -1,14 +1,19 @@
+set nocompatible              " be iMproved
+
 set timeout ttimeoutlen=10
 
 " Allow do mapping using alt keys
-for i in range(97, 122)
+for i in range(48, 57) " [0-9]
+  let c = nr2char(i)
+  exec "set <M-".c.">=\e".c
+endfor
+for i in range(97, 122) " [a-z]
   let c = nr2char(i)
   exec "set <M-".c.">=\e".c
 endfor
 
 let mapleader = ','
 " Inserted when vundle was intalled
-set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
@@ -27,23 +32,17 @@ Plugin 'kien/ctrlp.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
+" Enables mouse on vim
 set mouse=a
-syntax on
-syntax enable
+
 set background=dark
-colorscheme gruvbox
+
+" Only enable syntax highlighting if the terminal supports colors
+if &t_Co > 1
+  syntax on
+  colorscheme gruvbox
+endif
 
 "autocmd BufRead,BufNewFile *.g4 setfiletype antlr4
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
@@ -66,18 +65,18 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-l> <C-W>l
 
-" Browse through tabs like chrome
-map ,1 1gt
-map ,2 2gt
-map ,3 3gt
-map ,4 4gt
-map ,5 5gt
-map ,6 6gt
-map ,7 7gt
-map ,8 8gt
-map ,9 9gt
+" Browse through tabs
+map <M-1> 1gt
+map <M-2> 2gt
+map <M-3> 3gt
+map <M-4> 4gt
+map <M-5> 5gt
+map <M-6> 6gt
+map <M-7> 7gt
+map <M-8> 8gt
+map <M-9> 9gt
 
-" vai dar problemas caso intale o YouCompleteMe
+" Will cause problem if I install YouCompleteMe
 let g:UltiSnipsExpandTrigger="<tab>"
 
 set wildmenu
@@ -112,13 +111,25 @@ vmap j gj
 vmap k gk
 vmap 0 g0
 vmap $ g$
+
+" Don't wrap line in the middle of a word
 set linebreak
 
 " When I move to the end of the file, scroll 5 lines up to see better where
 "   I'm working
 set scrolloff=5
 "If I want to go to line 49 -> 49G - BUG TODO
-nmap G G5<C-e>
+nnoremap G G5<C-e>
 
 " Set's '~' to behave like a operator
 set tildeop
+
+"Restores the cursor back to where he was the last time I edited a certain
+"  file
+autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+
+" Make motion keys 'h' and 'l' wrap on edges of lines
+set whichwrap+=h,l
