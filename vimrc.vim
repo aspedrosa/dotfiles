@@ -2,7 +2,11 @@ set nocompatible              " be iMproved
 
 set timeout ttimeoutlen=10
 
-" Allow do mapping using alt keys
+" After exit insert mode a ^] (escape character) is inserted.
+"   With this mapping that character is canceled
+inoremap <ESC> <ESC><ESC>
+
+" Allow mappings to use alt keys
 for i in range(48, 57) " [0-9]
   let c = nr2char(i)
   exec "set <M-".c.">=\e".c
@@ -13,7 +17,7 @@ for i in range(97, 122) " [a-z]
 endfor
 
 let mapleader = ','
-" Inserted when vundle was intalled
+" Inserted when vundle was installed
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
@@ -54,6 +58,8 @@ set showcmd
 " Highlighting on typing, highlighting matches (don't remember what 'is' is
 "   for)
 set incsearch hlsearch is
+" Ignore case on searches
+set ignorecase
 nmap ,h :noh<CR>
 
 nnoremap ,o  o<CR>
@@ -82,10 +88,10 @@ let g:UltiSnipsExpandTrigger="<tab>"
 set wildmenu
 set confirm
 
-"Toggle spell checking on and off with ',s'
+" Toggle spell checking on and off
 nmap <silent> <leader>s :set spell!<CR>
 
-"Edit vimrc on the fly
+" Edit vimrc on the fly
 if has("autocmd")
   autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
 endif
@@ -93,16 +99,22 @@ endif
 " TODO dont edit the real vimrc file
 nmap <leader>v :tabedit ~/dotfiles/vimrc.vim<CR>
 
-"move text in file up and down (nao funcionam) alt
+" Move text in file up and down
 nmap <A-k> ddkP
 nmap <A-j> ddp
 vmap <A-k> dkP'[V']
 vmap <A-j> dp '[V']
 
-"Toggle NerdTree
+" Toggle NerdTree
 nmap <leader>n :NERDTreeToggle<CR>
+" Show hidden files
+let g:NERDTreeShowHidden=1
+" Change arrows of NERDTree.
+" TODO I need to change encoding for the original arrows to work
+let g:NERDTreeDirArrowExpandable = '>'
+let g:NERDTreeDirArrowCollapsible = 'v'
 
-" move inside wrapped lines.
+" Move inside wrapped lines.
 nmap j gj
 nmap k gk
 nmap 0 g0
@@ -133,3 +145,16 @@ autocmd BufReadPost *
 
 " Make motion keys 'h' and 'l' wrap on edges of lines
 set whichwrap+=h,l
+
+" New splits appear below(horizontal) or right(vertical)
+set splitbelow splitright
+
+" Sets encoding (not having this set was giving me problem on NERDTree)
+" BUT this mess up alt keys and they don't work
+" set encoding=utf-8
+
+" Whenever I enter a NERDTree buffer check if is the only window, if is quit
+autocmd WinEnter *
+    \ if winnr('$') == 1 && exists("t:NERDTreeBufName") && winnr() == bufwinnr(t:NERDTreeBufName) |
+    \   quit |
+    \ endif
