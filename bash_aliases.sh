@@ -1,9 +1,9 @@
 #On windows I redirect stderr because theres a lot of errors on some files
 grep -qE "Microsoft|WSL" /proc/version
 if [[ $? = 0 ]] ; then
-  alias ls='ls --color=always -A 2>/dev/null'
+  alias ls='ls --color=always --group-directories-first -A 2>/dev/null'
 else
-  alias ls='ls --color=always -A'
+  alias ls='ls --color=always --group-directories-first -A'
 fi
 
 alias ll='ls -lh'
@@ -34,3 +34,6 @@ alias bx="bxTimes"
 
 #Exit faster from terminal/bash
 alias e="exit"
+
+# Aliases to start programs to force me to use cli
+alias chrome="chrome &> /dev/null &"

@@ -166,7 +166,16 @@ if [[ $? = 0 ]] ; then
   export PS1="\[\e[31m\u @ \h\] \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
 else
   export PS1="\[\e[31m\u @ \h\] \`parse_git_branch\` \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
+
+  # Set environment variables for maven only in linux
+  export M2_HOME="~/programs/apache-maven-3.5.4"
+  export M2="$M2_HOME/bin"
+  export MAVEN_OPTS="-Xms256m -Xmx512m"
+  PATH="$M2:$PATH"
 fi
 
 # ls don't ignore '.' when sorting by name
 export LC_ALL="C"
+
+export JAVA_HOME="/usr/java/jdk1.8.0_181/"
+PATH="$PATH:${JAVA_HOME}bin" 

@@ -7,7 +7,7 @@ set timeout ttimeoutlen=10
 inoremap <ESC> <ESC><ESC>
 
 " Allow mappings to use alt keys
-for i in range(48, 57) " [0-9]
+for i in range(48, 57) " [10-9]
   let c = nr2char(i)
   exec "set <M-".c.">=\e".c
 endfor
@@ -26,13 +26,13 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'sirver/ultisnips'
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'vim-syntastic/syntastic'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -49,15 +49,15 @@ if &t_Co > 1
 endif
 
 "autocmd BufRead,BufNewFile *.g4 setfiletype antlr4
+autocmd BufRead,BufNewFile *.m set ft=octave
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 set number relativenumber
 
 set showcmd
 
-" Highlighting on typing, highlighting matches (don't remember what 'is' is
-"   for)
-set incsearch hlsearch is
+" Highlighting on typing, highlighting matches
+set incsearch hlsearch
 " Ignore case on searches
 set ignorecase
 nmap ,h :noh<CR>
@@ -107,22 +107,31 @@ vmap <A-j> dp '[V']
 
 " Toggle NerdTree
 nmap <leader>n :NERDTreeToggle<CR>
+
 " Show hidden files
 let g:NERDTreeShowHidden=1
+
 " Change arrows of NERDTree.
 " TODO I need to change encoding for the original arrows to work
 let g:NERDTreeDirArrowExpandable = '>'
 let g:NERDTreeDirArrowCollapsible = 'v'
 
+" Sets encoding (not having this set was giving me problem on NERDTree)
+" BUT this mess up alt keys. For them to work I need to change for loops
+" on top of this file
+set encoding=utf-8
+
+
 " Move inside wrapped lines.
-nmap j gj
-nmap k gk
-nmap 0 g0
-nmap $ g$
-vmap j gj
-vmap k gk
-vmap 0 g0
-vmap $ g$
+nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+nnoremap <expr> 0 (v:count == 0 ? 'g0' : '0')
+nnoremap <expr> $ (v:count == 0 ? 'g$' : '$')
+
+vnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+vnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+vnoremap <expr> 0 (v:count == 0 ? 'g0' : '0')
+vnoremap <expr> $ (v:count == 0 ? 'g$' : '$')
 
 " Don't wrap line in the middle of a word
 set linebreak
@@ -149,12 +158,40 @@ set whichwrap+=h,l
 " New splits appear below(horizontal) or right(vertical)
 set splitbelow splitright
 
-" Sets encoding (not having this set was giving me problem on NERDTree)
-" BUT this mess up alt keys and they don't work
-" set encoding=utf-8
-
 " Whenever I enter a NERDTree buffer check if is the only window, if is quit
 autocmd WinEnter *
     \ if winnr('$') == 1 && exists("t:NERDTreeBufName") && winnr() == bufwinnr(t:NERDTreeBufName) |
     \   quit |
     \ endif
+
+" Useful if developing bash/c/c++. Allow that man pages can be seen inside vim
+"   in a buffer. Ex: Man 3 printf
+runtime! ftplugin/man.vim
+
+" Don't save options and mappings of session (To save space. All those
+"   mappings and options are on vimrc)
+" However if I have a help page open (of vim) all of it's usual options are not gonna
+"   be loaded (ex: nonumbers)
+set sessionoptions-=options
+
+" Autoclose documentation window after I select a result (YouCompleteMe)
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+" keep signcolumn always open. This way, with youcompleteme, terminal isn't
+" always flashing to update the view
+set signcolumn=yes
+
+" disable syntastic on java
+let g:syntastic_java_checkers = []
+
+" option for syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_loc_list_height = 5
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_python_exec = 'python3'
+
+" This mapping is useful for languages like C,C++,Java but can couse
+" problems to instantiate arrays for example
+inoremap { {}<ESC>i<CR><ESC>O
