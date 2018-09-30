@@ -16,9 +16,3 @@
 [submodule ".vim/bundle/vim-surround"]
 	path = .vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround.git
-[submodule "YouCompleteMe"]
-	path = YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe
-[submodule "syntastic"]
-	path = syntastic
-	url = https://github.com/vim-syntastic/syntastic
