@@ -37,3 +37,5 @@ alias e="exit"
 
 # Aliases to start programs to force me to use cli
 alias chrome="chrome &> /dev/null &"
+alias spotify="spotify &> /dev/null &"
+alias virtualbox="virtualbox &> /dev/null &"

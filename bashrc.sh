@@ -1,3 +1,8 @@
+if [ -z $TMUX ] ; then
+  tmux
+  exit
+fi
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -164,10 +169,17 @@ grep -qE "Microsoft|WSL" /proc/version
 # I disable git on prompt on windows because makes it slow as hell. I just change colors.
 if [[ $? = 0 ]] ; then
   export PS1="\[\e[31m\u @ \h\] \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
-else
+else #also set some environment variables only for linux
   export PS1="\[\e[31m\u @ \h\] \`parse_git_branch\` \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
 
-  # Set environment variables for maven only in linux
+  # Kafka (IES)
+  export KAFKA_HOME="~/programs/kafka_2.11-2.0.0"
+  PATH="$KAFKA_HOME/bin:$PATH"
+
+  # Mongo (CBD)
+  PATH="~/programs/mongodb-linux-x86_64-ubuntu1804-4.0.2/bin:$PATH"
+
+  # Maven
   export M2_HOME="~/programs/apache-maven-3.5.4"
   export M2="$M2_HOME/bin"
   export MAVEN_OPTS="-Xms256m -Xmx512m"

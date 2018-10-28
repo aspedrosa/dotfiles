@@ -82,8 +82,13 @@ map <M-7> 7gt
 map <M-8> 8gt
 map <M-9> 9gt
 
-" Will cause problem if I install YouCompleteMe
+" UltiSnips and YouCompleteMe
 let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-tab>" "Not Working
+
+let g:ycm_key_list_select_completion = ['<C-n>']
+let g:ycm_key_list_previous_completion = ['<C-p>']
 
 set wildmenu
 set confirm
@@ -96,7 +101,7 @@ if has("autocmd")
   autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
 endif
 
-" TODO dont edit the real vimrc file
+" Map to start editing the vimrc file
 nmap <leader>v :tabedit ~/dotfiles/vimrc.vim<CR>
 
 " Move text in file up and down
@@ -194,4 +199,18 @@ let g:syntastic_python_python_exec = 'python3'
 
 " This mapping is useful for languages like C,C++,Java but can couse
 " problems to instantiate arrays for example
-inoremap { {}<ESC>i<CR><ESC>O
+"inoremap { {}<ESC>i<CR><ESC>O
+
+" Change cursor shape when entering insert mode to just a vertical bar
+" instead of a block
+" http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
+if has("autocmd")
+  au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
+  au InsertEnter,InsertChange *
+    \ if v:insertmode == 'i' |
+    \   silent execute '!echo -ne "\e[6 q"' | redraw! |
+    \ elseif v:insertmode == 'r' |
+    \   silent execute '!echo -ne "\e[4 q"' | redraw! |
+    \ endif
+  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+endif
