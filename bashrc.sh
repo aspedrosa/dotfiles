@@ -1,5 +1,5 @@
 if [ -z $TMUX ] ; then
-  tmux
+  env TERM=screen-256color tmux
   exit
 fi
 
@@ -115,6 +115,10 @@ if ! shopt -oq posix; then
 fi
 
 #My changes
+echo "TODO"
+echo "poo github"
+echo "aed github"
+
 ls
 
 # get current branch in git repo
@@ -172,12 +176,21 @@ if [[ $? = 0 ]] ; then
 else #also set some environment variables only for linux
   export PS1="\[\e[31m\u @ \h\] \`parse_git_branch\` \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
 
-  # Kafka (IES)
-  export KAFKA_HOME="~/programs/kafka_2.11-2.0.0"
-  PATH="$KAFKA_HOME/bin:$PATH"
+  #Fritzing
+  PATH="~/programs/fritzing-0.9.3b.linux.AMD64:$PATH"
 
   # Mongo (CBD)
   PATH="~/programs/mongodb-linux-x86_64-ubuntu1804-4.0.2/bin:$PATH"
+
+  # Cassandra (CBD)
+  PATH="~/programs/apache-cassandra-3.11.3/bin:$PATH"
+
+  # Neo4j (CBD)
+  PATH="~/programs/neo4j-community-3.5.0/bin:$PATH"
+
+  # Kafka (IES)
+  export KAFKA_HOME="~/programs/kafka_2.11-2.0.0"
+  PATH="$KAFKA_HOME/bin:$PATH"
 
   # Maven
   export M2_HOME="~/programs/apache-maven-3.5.4"

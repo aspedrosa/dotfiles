@@ -33,6 +33,8 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-syntastic/syntastic'
+Plugin 'elubow/cql-vim'
+Plugin 'mkitt/tabline.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -50,6 +52,12 @@ endif
 
 "autocmd BufRead,BufNewFile *.g4 setfiletype antlr4
 autocmd BufRead,BufNewFile *.m set ft=octave
+
+"enable italic comments using tmux+vim
+highlight Comment cterm=italic
+set t_ZH=[3m
+set t_ZR=[23m
+
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 set number relativenumber
@@ -132,11 +140,13 @@ nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap <expr> 0 (v:count == 0 ? 'g0' : '0')
 nnoremap <expr> $ (v:count == 0 ? 'g$' : '$')
+nnoremap <expr> ^ (v:count == 0 ? 'g^' : '^')
 
 vnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 vnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 vnoremap <expr> 0 (v:count == 0 ? 'g0' : '0')
 vnoremap <expr> $ (v:count == 0 ? 'g$' : '$')
+vnoremap <expr> ^ (v:count == 0 ? 'g^' : '^')
 
 " Don't wrap line in the middle of a word
 set linebreak
@@ -214,3 +224,5 @@ if has("autocmd")
     \ endif
   au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 endif
+
+tab all

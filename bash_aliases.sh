@@ -27,13 +27,26 @@ function bxTimes() {
 }
 alias bx="bxTimes"
 
-# function makeAndChange() {
-#     mkdir $1 && cd $1
-# }
-# alias mkdircd="makeAndChange"
+function makeAndChange() {
+    mkdir $1 && cd $1
+}
+alias mkcd="makeAndChange"
 
 #Exit faster from terminal/bash
 alias e="exit"
+
+# A new way to remove files/dictories and stil have rm
+function safe_rm() {
+  mv $* ~/.trash
+}
+alias del="safe_rm"
+
+# Access courses directories quickly
+alias cbd="cd ~/ua/1sem/cbd"
+alias ies="cd ~/ua/1sem/ies"
+alias ia="cd ~/ua/1sem/ia"
+alias sio="cd ~/ua/1sem/sio"
+alias taa="cd ~/ua/1sem/taa"
 
 # Aliases to start programs to force me to use cli
 alias chrome="chrome &> /dev/null &"
