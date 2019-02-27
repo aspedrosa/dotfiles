@@ -33,7 +33,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-syntastic/syntastic'
-Plugin 'elubow/cql-vim'
 Plugin 'mkitt/tabline.vim'
 
 call vundle#end()            " required
@@ -79,7 +78,7 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-l> <C-W>l
 
-" Browse through tabs
+" Browse through tabs - Not working
 map <M-1> 1gt
 map <M-2> 2gt
 map <M-3> 3gt
@@ -207,22 +206,24 @@ let g:syntastic_loc_list_height = 5
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_python_exec = 'python3'
 
-" This mapping is useful for languages like C,C++,Java but can couse
-" problems to instantiate arrays for example
-"inoremap { {}<ESC>i<CR><ESC>O
-
 " Change cursor shape when entering insert mode to just a vertical bar
 " instead of a block
 " http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
-if has("autocmd")
-  au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
-  au InsertEnter,InsertChange *
-    \ if v:insertmode == 'i' |
-    \   silent execute '!echo -ne "\e[6 q"' | redraw! |
-    \ elseif v:insertmode == 'r' |
-    \   silent execute '!echo -ne "\e[4 q"' | redraw! |
-    \ endif
-  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
-endif
+" if has("autocmd")
+"   au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
+"   au InsertEnter,InsertChange *
+"     \ if v:insertmode == 'i' |
+"     \   silent execute '!echo -ne "\e[6 q"' | redraw! |
+"     \ elseif v:insertmode == 'r' |
+"     \   silent execute '!echo -ne "\e[4 q"' | redraw! |
+"     \ endif
+"   au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+" endif
+" Problem with urxvt - constant fliquering entering and exiting modes
 
-tab all
+" Make vim use sistem clipboard
+set clipboard=unnamedplus 
+
+" When vim is executed with multiple files as argument open
+"   all of them in tabs
+silent tab all
