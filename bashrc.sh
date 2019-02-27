@@ -1,8 +1,3 @@
-if [ -z $TMUX ] ; then
-  env TERM=screen-256color tmux
-  exit
-fi
-
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -115,11 +110,12 @@ if ! shopt -oq posix; then
 fi
 
 #My changes
-echo "TODO"
-echo "poo github"
-echo "aed github"
+cat ~/TODO
 
 ls
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
 
 # get current branch in git repo
 function parse_git_branch() {
@@ -169,38 +165,7 @@ function parse_git_dirty {
 }
 
 # Customize prompt (TODO not my final form)
-grep -qE "Microsoft|WSL" /proc/version
-# I disable git on prompt on windows because makes it slow as hell. I just change colors.
-if [[ $? = 0 ]] ; then
-  export PS1="\[\e[31m\u @ \h\] \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
-else #also set some environment variables only for linux
-  export PS1="\[\e[31m\u @ \h\] \`parse_git_branch\` \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
-
-  #Fritzing
-  PATH="~/programs/fritzing-0.9.3b.linux.AMD64:$PATH"
-
-  # Mongo (CBD)
-  PATH="~/programs/mongodb-linux-x86_64-ubuntu1804-4.0.2/bin:$PATH"
-
-  # Cassandra (CBD)
-  PATH="~/programs/apache-cassandra-3.11.3/bin:$PATH"
-
-  # Neo4j (CBD)
-  PATH="~/programs/neo4j-community-3.5.0/bin:$PATH"
-
-  # Kafka (IES)
-  export KAFKA_HOME="~/programs/kafka_2.11-2.0.0"
-  PATH="$KAFKA_HOME/bin:$PATH"
-
-  # Maven
-  export M2_HOME="~/programs/apache-maven-3.5.4"
-  export M2="$M2_HOME/bin"
-  export MAVEN_OPTS="-Xms256m -Xmx512m"
-  PATH="$M2:$PATH"
-fi
+export PS1="\[\e[31m\u @ \h\] \`parse_git_branch\` \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
 
 # ls don't ignore '.' when sorting by name
 export LC_ALL="C"
-
-export JAVA_HOME="/usr/java/jdk1.8.0_181/"
-PATH="$PATH:${JAVA_HOME}bin" 
