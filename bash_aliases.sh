@@ -27,7 +27,18 @@ function makeAndChange() {
 alias mkcd="makeAndChange"
 
 # Exit faster from terminal/bash
-alias e="exit"
+function jobs_exit() {
+  jobs_out=$(jobs)
+  if [[ $jobs_out != "" ]] ; then
+    echo $jobs_out
+    return 1
+  fi
+
+  exit
+}
+alias e="jobs_exit"
+
+alias xopen="xdg-open"
 
 # Access courses directories quickly
 alias agr="cd ~/ua/agr"
@@ -37,3 +48,12 @@ alias tqs="cd ~/ua/tqs"
 
 # Command to execute before commits
 alias sshagent="eval `ssh-agent` ; ssh-add"
+
+# Terminal calculator
+# https://askubuntu.com/questions/378661/any-command-line-calculator-for-ubuntu
+calc() {
+    local IFS=' '
+    local cal="${*//p/+}"
+    cal="${cal//x/*}"
+    bc -l <<<"scale=10;$cal"
+}
