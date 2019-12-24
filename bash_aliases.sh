@@ -57,3 +57,6 @@ calc() {
     cal="${cal//x/*}"
     bc -l <<<"scale=10;$cal"
 }
+
+alias -g bg_all_null=" &> /dev/null &"
+alias -g bg_only=" &"

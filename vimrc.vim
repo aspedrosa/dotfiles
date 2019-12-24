@@ -4,17 +4,7 @@ set timeout ttimeoutlen=10
 
 " After exit insert mode a ^] (escape character) is inserted.
 "   With this mapping that character is canceled
-inoremap <ESC> <ESC><ESC>
-
-" Allow mappings to use alt keys
-for i in range(48, 57) " [10-9]
-  let c = nr2char(i)
-  exec "set <M-".c.">=\e".c
-endfor
-for i in range(97, 122) " [a-z]
-  let c = nr2char(i)
-  exec "set <M-".c.">=\e".c
-endfor
+" inoremap <ESC> <ESC><ESC>
 
 let mapleader = ','
 " Inserted when vundle was installed
@@ -31,9 +21,9 @@ Plugin 'tpope/vim-repeat'
 Plugin 'sirver/ultisnips'
 Plugin 'scrooloose/nerdtree'
 Plugin 'kien/ctrlp.vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'vim-syntastic/syntastic'
 Plugin 'mkitt/tabline.vim'
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'airblade/vim-gitgutter'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -49,15 +39,12 @@ if &t_Co > 1
   colorscheme gruvbox
 endif
 
-"autocmd BufRead,BufNewFile *.g4 setfiletype antlr4
-autocmd BufRead,BufNewFile *.m set ft=octave
-
-"enable italic comments using tmux+vim
+"enable italic comments
 highlight Comment cterm=italic
 set t_ZH=[3m
 set t_ZR=[23m
 
-set tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 set number relativenumber
 
@@ -73,21 +60,21 @@ nnoremap ,o  o<CR>
 nnoremap ,O  O<ESC>O
 
 " Browse through windows
-map <C-h> <C-W>h
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-l> <C-W>l
+nmap <C-h> <C-W>h
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-l> <C-W>l
 
 " Browse through tabs - Not working
-map <M-1> 1gt
-map <M-2> 2gt
-map <M-3> 3gt
-map <M-4> 4gt
-map <M-5> 5gt
-map <M-6> 6gt
-map <M-7> 7gt
-map <M-8> 8gt
-map <M-9> 9gt
+nnoremap <Esc>1 1gt
+nnoremap <Esc>2 2gt
+nnoremap <Esc>3 3gt
+nnoremap <Esc>4 4gt
+nnoremap <Esc>5 5gt
+nnoremap <Esc>6 6gt
+nnoremap <Esc>7 7gt
+nnoremap <Esc>8 8gt
+nnoremap <Esc>9 9gt
 
 " UltiSnips and YouCompleteMe
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -103,19 +90,29 @@ set confirm
 " Toggle spell checking on and off
 nmap <silent> <leader>s :set spell!<CR>
 
-" Edit vimrc on the fly
 if has("autocmd")
-  autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
+  " Edit vimrc on the fly
+  " autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
+
+  " Syntax for some specific files
+  "autocmd BufRead,BufNewFile *.g4 setfiletype antlr4
+  autocmd BufRead,BufNewFile *.m set ft=octave
+  autocmd BufRead,BufNewFile *.zsh-theme set ft=octave
+
+  autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=69 " textwith with splitscreen of my pc
+endif
+
+" Compile mappings
+nnoremap <leader>cl :w<CR>:!latexmake<CR>
+nnoremap <leader>cb :w<CR>:!bibtexmake<CR>
+
+" After a re-source, fix syntax matching issues (concealing brackets):
+if exists('g:loaded_webdevicons')
+  call webdevicons#refresh()
 endif
 
 " Map to start editing the vimrc file
 nmap <leader>v :tabedit ~/dotfiles/vimrc.vim<CR>
-
-" Move text in file up and down
-nmap <A-k> ddkP
-nmap <A-j> ddp
-vmap <A-k> dkP'[V']
-vmap <A-j> dp '[V']
 
 " Toggle NerdTree
 nmap <leader>n :NERDTreeToggle<CR>
@@ -124,9 +121,8 @@ nmap <leader>n :NERDTreeToggle<CR>
 let g:NERDTreeShowHidden=1
 
 " Change arrows of NERDTree.
-" TODO I need to change encoding for the original arrows to work
-let g:NERDTreeDirArrowExpandable = '>'
-let g:NERDTreeDirArrowCollapsible = 'v'
+let g:NERDTreeDirArrowExpandable = ' '
+let g:NERDTreeDirArrowCollapsible = ' '
 
 " Sets encoding (not having this set was giving me problem on NERDTree)
 " BUT this mess up alt keys. For them to work I need to change for loops
@@ -153,8 +149,6 @@ set linebreak
 " When I move to the end of the file, scroll 5 lines up to see better where
 "   I'm working
 set scrolloff=5
-"If I want to go to line 49 -> 49G - BUG TODO
-nnoremap G G5<C-e>
 
 " Set's '~' to behave like a operator
 set tildeop
@@ -172,7 +166,7 @@ set whichwrap+=h,l
 " New splits appear below(horizontal) or right(vertical)
 set splitbelow splitright
 
-" Whenever I enter a NERDTree buffer check if is the only window, if is quit
+" Whenever I enter a NERDTree buffer check if is the only window, if it is quit
 autocmd WinEnter *
     \ if winnr('$') == 1 && exists("t:NERDTreeBufName") && winnr() == bufwinnr(t:NERDTreeBufName) |
     \   quit |
@@ -189,11 +183,11 @@ runtime! ftplugin/man.vim
 set sessionoptions-=options
 
 " Autoclose documentation window after I select a result (YouCompleteMe)
-let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_autoclose_preview_window_after_completion = 1
 
 " keep signcolumn always open. This way, with youcompleteme, terminal isn't
 " always flashing to update the view
-set signcolumn=yes
+"set signcolumn=yes
 
 " disable syntastic on java
 let g:syntastic_java_checkers = []
@@ -223,6 +217,23 @@ let g:syntastic_python_python_exec = 'python3'
 
 " Make vim use sistem clipboard
 set clipboard=unnamedplus 
+
+" Transparent backgroung
+hi Normal guibg=NONE ctermbg=NONE
+
+" Remove toolbar, menubar and scroolbars on gvim
+set guioptions-=m
+set guioptions-=T
+set guioptions-=r
+set guioptions-=L
+
+vnoremap <leader>f gq
+set formatoptions+=ro
+
+hi SpellBad cterm=underline
+hi SpellCap cterm=underline
+hi SpellRare cterm=underline
+hi SpellLocal cterm=underline
 
 " When vim is executed with multiple files as argument open
 "   all of them in tabs
