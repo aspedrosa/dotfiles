@@ -1,12 +1,12 @@
 [options]
-font = UbuntuMono Nerd Font Mono 13
+font = UbuntuMono Nerd Font Mono 15
 scrollback_lines=5000
 
 [colors]
 # hard contrast: background = #1d2021
 # medium contrast: background = #282828
 # background = #32302f
-background = rgba(50, 48, 47, 0.8)
+background = rgba(50, 48, 47, 0.95)
 foreground = #ebdbb2
 foreground_bold = #ebdbb2
 
