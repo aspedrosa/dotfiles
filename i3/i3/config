@@ -1,22 +1,13 @@
-# i3 config file (v4)
-# Please see http://i3wm.org/docs/userguide.html for a complete reference!
-
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
 
-# set default desktop layout (default is tiling)
-# workspace_layout tabbed <stacking|tabbed>
-
-# Configure border style <normal|1pixel|pixel xx|none|pixel>
-new_window pixel 1
-new_float normal
-
-# Hide borders
-hide_edge_borders none
+# Configure border style
+default_border none
+default_floating_border pixel
 
 # change borders
 bindsym $mod+u border none
-bindsym $mod+y border pixel 1
+bindsym $mod+p border pixel
 bindsym $mod+n border normal
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -43,10 +34,10 @@ bindsym $mod+z exec --no-startup-id morc_menu
 ################################################################################################
 
 exec --no-startup-id volumeicon
-bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
+#bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 #exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
-#bindsym $mod+Ctrl+m exec pavucontrol
+bindsym $mod+Ctrl+m exec pavucontrol
 
 ################################################################################################
 
@@ -290,18 +281,17 @@ set_from_resource $term_color15    color15
 
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
-	i3bar_command i3bar
-	status_command i3status
-	position top
+    i3bar_command i3bar
+    status_command i3status
+    position top
 
-## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
-  tray_output primary
-#	tray_output eDP1
+## set primary output first -> 'xrandr --output eDP-1 --primary'
+    tray_output primary
 
-	bindsym button4 nop
-	bindsym button5 nop
-  font xft:UbuntuMono Nerd Font 12
-	strip_workspace_numbers yes
+    bindsym button4 nop
+    bindsym button5 nop
+    font xft:UbuntuMono Nerd Font 14
+    strip_workspace_numbers yes
 
     colors {
         background #222D31
@@ -335,20 +325,15 @@ bindsym $mod+m bar mode toggle
 #############################
 
 # Set inner/outer gaps
-#gaps inner 14
-#gaps outer -2
-
-# Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
-# gaps inner|outer current|all set|plus|minus <px>
-# gaps inner all set 10
-# gaps outer all plus 5
+gaps inner 10
+gaps outer -5
 
 # Smart gaps (gaps used if only more than one container on the workspace)
-#smart_gaps on
+smart_gaps on
 
 # Smart borders (draw borders around container only if it is not the only container on this workspace) 
 # on|no_gaps (on=always activate and no_gaps=only activate if the gap size to the edge of the screen is 0)
-#smart_borders on COMMENTED
+smart_borders no_gaps
 
 # Press $mod+Shift+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
 set $mode_gaps Gaps: (o) outer, (i) inner
@@ -399,12 +384,12 @@ bindsym $mod+x mode "$mode_display"
 # Set the shortcuts and what they do
 set $mode_display Ext Screen (l)eft, (a)bove, (r)ight, (b)elow, (o)FF
 mode "$mode_display" {
-    bindsym l exec --no-stratup-id xrandr --output HDMI1 --auto --left-of  eDP1, mode "default"
-    bindsym a exec --no-stratup-id xrandr --output HDMI1 --auto --above    eDP1, mode "default"
-    bindsym r exec --no-stratup-id xrandr --output HDMI1 --auto --right-of eDP1, mode "default"
-    bindsym b exec --no-stratup-id xrandr --output HDMI1 --auto --below    eDP1, mode "default"
+    bindsym l exec --no-stratup-id xrandr --output HDMI-1 --auto --left-of  eDP-1, mode "default"
+    bindsym a exec --no-stratup-id xrandr --output HDMI-1 --auto --above    eDP-1, mode "default"
+    bindsym r exec --no-stratup-id xrandr --output HDMI-1 --auto --right-of eDP-1, mode "default"
+    bindsym b exec --no-stratup-id xrandr --output HDMI-1 --auto --below    eDP-1, mode "default"
 
-    bindsym o exec --no-startup-id xrandr --output HDMI1 --auto --off --output eDP1 --primary --auto, mode "default"
+    bindsym o exec --no-startup-id xrandr --output HDMI-1 --auto --off --output eDP-1 --primary --auto, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
