@@ -3,23 +3,32 @@ alias ls='ls --color=always --group-directories-first -A'
 alias ll='ls -lh --time-style=+"%e %b %l:%M %p"'
 alias l='ls'
 
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
 # Changes to the directory in the command's argument and shows his content
 function csFunc() {
 	cd $1 && ls
 }
 alias cd="csFunc"
 
-# Go back one directory and shows his content
-alias b="cd .."
+# Go back one or more directories and shows the content of the final directory
+function back() {
+    if [[ $# -eq 0 ]] ; then
+        cd ..
+    elif [[ $# -eq 1 ]] ; then
+        for i in $(seq 1 $1) ; do
+            cd .. 1> /dev/null
+        done
+    else
+        >&2 echo "Too many arguments"
+        exit 1
+    fi
 
-# Go back x directories and shows the content of the final directory
-function bxTimes() {
-    for i in $(seq 1 $1) ; do
-        cd .. 1>/dev/null
-    done
     ls
 }
-alias bx="bxTimes"
+alias b="back"
 
 function makeAndChange() {
     mkdir $1 && cd $1
@@ -38,13 +47,20 @@ function jobs_exit() {
 }
 alias e="jobs_exit"
 
-alias xopen="xdg-open"
+function default_open() {
+    for arg in "$@" ; do
+        xdg-open $arg > /dev/null &
+    done
+}
+alias xo="default_open"
 
 # Access courses directories quickly
-alias agr="cd ~/ua/agr"
-alias apsei="cd ~/ua/apsei"
-alias pi="cd ~/ua/pi"
-alias tqs="cd ~/ua/tqs"
+alias as="cd ~/ua/as"
+alias bic="cd ~/ua/bic"
+alias cle="cd ~/ua/cle"
+alias es="cd ~/ua/es"
+alias gic="cd ~/ua/gic"
+alias sio="cd ~/ua/sio"
 
 # Command to execute before commits
 alias sshagent="eval `ssh-agent` ; ssh-add"
@@ -60,3 +76,5 @@ calc() {
 
 alias -g bg_all_null=" &> /dev/null &"
 alias -g bg_only=" &"
+
+alias k="kill -9"
