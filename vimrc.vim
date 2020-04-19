@@ -99,7 +99,7 @@ if has("autocmd")
   autocmd BufRead,BufNewFile *.m set ft=octave
   autocmd BufRead,BufNewFile *.zsh-theme set ft=octave
 
-  autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=69 " textwith with splitscreen of my pc
+  autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=89 " textwith with splitscreen of my pc
 endif
 
 " Compile mappings
