@@ -1,0 +1,9 @@
+{
+    "editor.fontSize": 15,
+    "window.zoomLevel": 1,
+    "workbench.colorTheme": "Gruvbox Dark (Medium)",
+    "keyboard.dispatch": "keyCode",
+    "editor.lineNumbers": "relative",
+    "vim.vimrc.enable": true,
+    "vim.vimrc.path": "~/.vimrc"
+}
