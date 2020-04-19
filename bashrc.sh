@@ -27,7 +27,7 @@ shopt -s checkwinsize
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
 
-source $HOME/dotfiles/bash_aliases.sh
+source $HOME/dotfiles/aliases.sh
 
 export VISUAL=vim
 export EDITOR="$VISUAL"

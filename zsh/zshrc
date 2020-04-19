@@ -96,7 +96,7 @@ export TERM=xterm-256color #fixex ssh cmds problems
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-source $HOME/dotfiles/bash_aliases.sh
+source $HOME/dotfiles/aliases.sh
 
 bindkey '^ ' autosuggest-execute
 
