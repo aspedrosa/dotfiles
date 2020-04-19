@@ -7,19 +7,18 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-# Changes to the directory in the command's argument and shows his content
-function csFunc() {
-	cd $1 && ls
-}
-alias cd="csFunc"
-
 # Go back one or more directories and shows the content of the final directory
 function back() {
     if [[ $# -eq 0 ]] ; then
         cd ..
     elif [[ $# -eq 1 ]] ; then
+        initial_pwd=$(pwd)
         for i in $(seq 1 $1) ; do
-            cd .. 1> /dev/null
+            cd ..
+            if [[ $? -ne 0 ]] ; then
+                cd $initial_pwd
+                exit 2
+            fi
         done
     else
         >&2 echo "Too many arguments"
@@ -29,6 +28,12 @@ function back() {
     ls
 }
 alias b="back"
+
+# Changes to the directory in the command's argument and shows his content
+function csFunc() {
+	cd $1 && ls
+}
+alias cd="csFunc"
 
 function makeAndChange() {
     mkdir $1 && cd $1
