@@ -103,4 +103,6 @@ bindkey '^ ' autosuggest-execute
 # ls don't ignore '.' when sorting by name
 export LC_ALL="C"
 
+setxkbmap -option caps:swapescape
+
 ls
