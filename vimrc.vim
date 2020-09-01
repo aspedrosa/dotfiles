@@ -25,6 +25,7 @@ Plugin 'mkitt/tabline.vim'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tranvansang/octave.vim'
+Plugin 'morhetz/gruvbox'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -34,8 +35,11 @@ set mouse=a
 
 set background=dark
 
+let g:gruvbox_italic=1
+
 " Only enable syntax highlighting if the terminal supports colors
 if &t_Co > 1
+  set termguicolors
   syntax on
   colorscheme gruvbox
 endif
