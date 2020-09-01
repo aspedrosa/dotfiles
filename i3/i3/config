@@ -18,16 +18,15 @@ font xft:consolas 11
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminal
+#bindsym $mod+Return exec terminal  # raw i3
+bindsym $mod+Return exec konsole  # kde
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym $mod+d exec --no-startup-id dmenu_recency
-
-# launch categorized menu
-bindsym $mod+z exec --no-startup-id morc_menu
+#bindsym $mod+d exec --no-startup-id dmenu_recency  # raw i3
+bindsym $mod+d exec --no-startup-id krunner  # kde
 
 ################################################################################################
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
@@ -192,6 +191,20 @@ for_window [class="Skype"] floating enable border normal
 for_window [class="Timeset-gui"] floating enable border normal
 for_window [class="Xfburn"] floating enable
 
+# kde
+for_window [title="Desktop <E2><80><94> Plasma"] kill; floating enable; border none
+for_window [class="plasmashell"] floating enable;
+for_window [class="Plasma"] floating enable; border none
+for_window [title="plasma-desktop"] floating enable; border none
+for_window [title="win7"] floating enable; border none
+for_window [class="krunner"] floating enable; border none
+for_window [class="Kmix"] floating enable; border none
+for_window [class="Klipper"] floating enable; border none
+for_window [class="Plasmoidviewer"] floating enable; border none
+for_window [class="(?i)*nextcloud*"] floating disable
+for_window [class="plasmashell" window_type="notification"] floating enable, border none, move right 700px, move down 450px
+no_focus [class="plasmashell" window_type="notification"]
+
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
 
@@ -237,14 +250,10 @@ mode "resize" {
 bindsym $mod+9 exec --no-startup-id blurlock
 
 # Autostart applications
-exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nitrogen --restore; sleep 1; compton -b
-exec --no-startup-id nm-applet
-exec --no-startup-id xfce4-power-manager
-exec --no-startup-id slack
-# exec --no-startup-id blueman-applet #Bluetooth
-# exec_always --no-startup-id sbxkb
-#exec --no-startup-id xautolock -time 10 -locker blurlock
+#exec --no-startup-id nm-applet
+#exec --no-startup-id xfce4-power-manager
+#exec_always --no-startup-id sbxkb  # keyboard layout displayer
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 
@@ -279,33 +288,34 @@ set_from_resource $term_color13    color13
 set_from_resource $term_color14    color14
 set_from_resource $term_color15    color15
 
+# Don't render i3 bar with kde
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
-bar {
-    i3bar_command i3bar
-    status_command i3status
-    position top
-
-## set primary output first -> 'xrandr --output eDP-1 --primary'
-    tray_output primary
-
-    bindsym button4 nop
-    bindsym button5 nop
-    font xft:UbuntuMono Nerd Font 14
-    strip_workspace_numbers yes
-
-    colors {
-        background #222D31
-        statusline #F9FAF9
-        separator  #454947
-
-#                      border  backgr. text
-        focused_workspace  #F9FAF9 #16a085 #292F34
-        active_workspace   #595B5B #353836 #FDF6E3
-        inactive_workspace #595B5B #222D31 #EEE8D5
-        binding_mode       #16a085 #2C2C2C #F9FAF9
-        urgent_workspace   #16a085 #FDF6E3 #E5201D
-    }
-}
+#bar {
+#    i3bar_command i3bar
+#    status_command i3status
+#    position top
+#
+### set primary output first -> 'xrandr --output eDP-1 --primary'
+#    tray_output primary
+#
+#    bindsym button4 nop
+#    bindsym button5 nop
+#    font xft:UbuntuMono Nerd Font 14
+#    strip_workspace_numbers yes
+#
+#    colors {
+#        background #222D31
+#        statusline #F9FAF9
+#        separator  #454947
+#
+##                          border  backgr. text
+#        focused_workspace  #F9FAF9 #16a085 #292F34
+#        active_workspace   #595B5B #353836 #FDF6E3
+#        inactive_workspace #595B5B #222D31 #EEE8D5
+#        binding_mode       #16a085 #2C2C2C #F9FAF9
+#        urgent_workspace   #16a085 #FDF6E3 #E5201D
+#    }
+#}
 
 # hide/unhide i3status bar
 bindsym $mod+m bar mode toggle
