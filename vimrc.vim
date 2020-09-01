@@ -20,7 +20,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'sirver/ultisnips'
 Plugin 'scrooloose/nerdtree'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mkitt/tabline.vim'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'airblade/vim-gitgutter'
@@ -97,9 +97,11 @@ if has("autocmd")
   " Syntax for some specific files
   "autocmd BufRead,BufNewFile *.g4 setfiletype antlr4
   autocmd BufRead,BufNewFile *.m set ft=octave
-  autocmd BufRead,BufNewFile *.zsh-theme set ft=octave
 
   autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=89 " textwith with splitscreen of my pc
+
+  autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
+  autocmd FileType js setlocal shiftwidth=2 tabstop=2 softtabstop=2
 endif
 
 " Compile mappings
@@ -213,7 +215,6 @@ let g:syntastic_python_python_exec = 'python3'
 "     \ endif
 "   au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 " endif
-" Problem with urxvt - constant fliquering entering and exiting modes
 
 " Make vim use sistem clipboard
 set clipboard=unnamedplus 
@@ -234,6 +235,10 @@ hi SpellBad cterm=underline
 hi SpellCap cterm=underline
 hi SpellRare cterm=underline
 hi SpellLocal cterm=underline
+
+" shortcuts to save and quit
+nnoremap <leader>ww :w<CR>
+nnoremap <leader>wq :wq<CR>
 
 " When vim is executed with multiple files as argument open
 "   all of them in tabs
