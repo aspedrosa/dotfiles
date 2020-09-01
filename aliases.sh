@@ -59,6 +59,17 @@ function default_open() {
 }
 alias xo="default_open"
 
+function stop_and_remove_docker_container() {
+    docker stop $1 > /dev/null
+    if [[ $? -ne 0 ]] ; then
+        >&2 echo "Unable to stop container"
+        exit 1
+    fi
+
+    docker rm $1
+}
+alias docker_sr="stop_and_remove_docker_container"
+
 # Access courses directories quickly
 alias as="cd ~/ua/as"
 alias bic="cd ~/ua/bic"
