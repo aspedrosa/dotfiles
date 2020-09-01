@@ -24,6 +24,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mkitt/tabline.vim'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'tranvansang/octave.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -93,10 +94,6 @@ nmap <silent> <leader>s :set spell!<CR>
 if has("autocmd")
   " Edit vimrc on the fly
   " autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
-
-  " Syntax for some specific files
-  "autocmd BufRead,BufNewFile *.g4 setfiletype antlr4
-  autocmd BufRead,BufNewFile *.m set ft=octave
 
   autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=89 " textwith with splitscreen of my pc
 
