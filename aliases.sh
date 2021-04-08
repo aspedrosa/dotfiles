@@ -8,40 +8,80 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # Go back one or more directories and shows the content of the final directory
-function back() {
+function b() {
     if [[ $# -eq 0 ]] ; then
         cd ..
     elif [[ $# -eq 1 ]] ; then
+        if ! [[ $1 =~ "^[0-9]+$" ]] ; then
+            >&2 echo "Argument should be a number"
+            return 1
+        fi
+
         initial_pwd=$(pwd)
         for i in $(seq 1 $1) ; do
             cd ..
             if [[ $? -ne 0 ]] ; then
                 cd $initial_pwd
-                exit 2
+                return 2
             fi
         done
     else
         >&2 echo "Too many arguments"
-        exit 1
+        return 1
     fi
 
     ls
 }
-alias b="back"
+
+function bcd() {
+    if [[ $# -eq 0 ]] ; then
+        cd ..
+    elif [[ $# -eq 1 ]] ; then
+        if [[ $1 =~ "^[0-9]+$" ]] ; then
+            b $1
+        else
+            b &> /dev/null
+            cd $1
+            ls
+        fi
+    elif [[ $# -eq 2 ]] ; then
+        if ! [[ $1 =~ "^[0-9]+$" ]] ; then
+            >&2 echo "When providing two arguments the first should be a number"
+            return 1
+        fi
+
+        initial_pwd=$(pwd)
+
+        b $1 &> /dev/null
+        if [[ $? -ne 0 ]] ; then
+            cd $initial_pwd
+            return 1
+        fi
+
+        cd $2 &> /dev/null
+        if [[ $? -ne 0 ]] ; then
+            cd $initial_pwd
+            return 1
+        fi
+
+        ls
+    else
+        >&2 echo "Too many arguments"
+        return 1
+    fi
+}
 
 # Changes to the directory in the command's argument and shows his content
-function csFunc() {
+function cd() {
 	cd $1 && ls
 }
-alias cd="csFunc"
 
-function makeAndChange() {
+function mkcd() {
     mkdir $1 && cd $1
 }
-alias mkcd="makeAndChange"
 
 # Exit faster from terminal/bash
-function jobs_exit() {
+function e() {
   jobs_out=$(jobs)
   if [[ $jobs_out != "" ]] ; then
     echo $jobs_out
@@ -50,47 +90,84 @@ function jobs_exit() {
 
   exit
 }
-alias e="jobs_exit"
 
-function default_open() {
+function xo() {
     for arg in "$@" ; do
         xdg-open $arg > /dev/null &
     done
 }
-alias xo="default_open"
-
-function stop_and_remove_docker_container() {
-    docker stop $1 > /dev/null
-    if [[ $? -ne 0 ]] ; then
-        >&2 echo "Unable to stop container"
-        exit 1
-    fi
-
-    docker rm $1
-}
-alias docker_sr="stop_and_remove_docker_container"
-
-# Access courses directories quickly
-alias as="cd ~/ua/as"
-alias bic="cd ~/ua/bic"
-alias cle="cd ~/ua/cle"
-alias es="cd ~/ua/es"
-alias gic="cd ~/ua/gic"
-alias sio="cd ~/ua/sio"
-
-# Command to execute before commits
-alias sshagent="eval `ssh-agent` ; ssh-add"
-
-# Terminal calculator
-# https://askubuntu.com/questions/378661/any-command-line-calculator-for-ubuntu
-calc() {
-    local IFS=' '
-    local cal="${*//p/+}"
-    cal="${cal//x/*}"
-    bc -l <<<"scale=10;$cal"
-}
-
-alias -g bg_all_null=" &> /dev/null &"
-alias -g bg_only=" &"
 
 alias k="kill -9"
+alias ka="killall"
+
+alias reboot="systemctl reboot"
+
+alias apt-upgrade="sudo bash -c 'apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y'"
+
+alias fzf="fzf --height=10"
+
+function _choose_container() {
+    local containers=$(docker ps $1 --format "{{.ID}}\t| {{.Image}}\t| {{.Ports}}\t| {{.Names}}")
+    if [ -z "$containers" ] ; then
+        echo "No running containers"
+        return 1
+    fi
+
+    local choice=$(echo "$containers" | fzf)
+    if [ -z "$choice" ] ; then
+        return 1
+    fi
+
+    echo $choice | sed "s/\t|//g" | awk '{print $1}'
+}
+
+function _choose_container_from_all() {
+    _choose_container "-a"
+    if [[ $? -ne 0 ]] ; then
+        return 1
+    fi
+}
+
+function docker-exec() {
+    container_id=$(_choose_container)
+    if [[ $? -ne 0 ]] ; then
+        echo $container_id
+        return
+    fi
+    
+    docker exec -it $container_id bash
+    if [[ $? -ne 0 ]] ; then
+        docker exec -it $container_id sh
+    fi
+}
+
+function docker-stop() {
+    container_id=$(_choose_container)
+    if [[ $? -ne 0 ]] ; then
+        echo $container_id
+        return
+    fi
+
+    docker stop $container_id
+}
+
+function docker-stoprm() {
+    container_id=$(_choose_container)
+    if [[ $? -ne 0 ]] ; then
+        echo $container_id
+        return
+    fi
+
+    docker stop $container_id
+    docker rm $container_id
+}
+
+function docker-rm() {
+    container_id=$(_choose_container_from_all)
+    if [[ $? -ne 0 ]] ; then
+        echo $container_id
+        return
+    fi
+
+    docker rm $container_id
+}
