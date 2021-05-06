@@ -96,15 +96,19 @@ if has("autocmd")
   " Edit vimrc on the fly
   " autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
 
-  autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=89 " textwith with splitscreen of my pc
+  " autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=87 " textwith with splitscreen of my pc
 
   autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
   autocmd FileType js setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
+  " Keep the clipboard after leaving vim
+  autocmd VimLeave * call system("xsel -ib", getreg('+'))
 endif
 
 " Compile mappings
 nnoremap <leader>cl :w<CR>:!latexmake<CR>
 nnoremap <leader>cb :w<CR>:!bibtexmake<CR>
+nnoremap <leader>cm :w<CR>:!make -j 12<CR>
 
 " After a re-source, fix syntax matching issues (concealing brackets):
 if exists('g:loaded_webdevicons')
@@ -116,6 +120,9 @@ nmap <leader>v :tabedit ~/dotfiles/vimrc.vim<CR>
 
 " Toggle NerdTree
 nmap <leader>n :NERDTreeToggle<CR>
+
+" Display NerdTree on all tabs
+autocmd BufWinEnter * silent NERDTreeMirror
 
 " Show hidden files
 let g:NERDTreeShowHidden=1
@@ -208,7 +215,7 @@ set guioptions-=T
 set guioptions-=r
 set guioptions-=L
 
-vnoremap <leader>f gq
+" vnoremap <leader>f gq
 set formatoptions+=ro
 
 hi SpellBad cterm=underline
