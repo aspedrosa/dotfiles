@@ -81,13 +81,10 @@ nnoremap <Esc>7 7gt
 nnoremap <Esc>8 8gt
 nnoremap <Esc>9 9gt
 
-" UltiSnips and YouCompleteMe
+" UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-tab>" "Not Working
-
-let g:ycm_key_list_select_completion = ['<C-n>']
-let g:ycm_key_list_previous_completion = ['<C-p>']
 
 set wildmenu
 set confirm
@@ -184,24 +181,6 @@ runtime! ftplugin/man.vim
 " However if I have a help page open (of vim) all of it's usual options are not gonna
 "   be loaded (ex: nonumbers)
 set sessionoptions-=options
-
-" Autoclose documentation window after I select a result (YouCompleteMe)
-" let g:ycm_autoclose_preview_window_after_completion = 1
-
-" keep signcolumn always open. This way, with youcompleteme, terminal isn't
-" always flashing to update the view
-"set signcolumn=yes
-
-" disable syntastic on java
-let g:syntastic_java_checkers = []
-
-" option for syntastic
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_loc_list_height = 5
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_python_exec = 'python3'
 
 " Change cursor shape when entering insert mode to just a vertical bar
 " instead of a block
