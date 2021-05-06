@@ -33,6 +33,10 @@ function b() {
     ls
 }
 
+# back x amounts of directories and cd into the provided path
+# if only on argument is provided either
+#  - go back x directories
+#  - back 1 directory and cd into the provided path
 function bcd() {
     if [[ $# -eq 0 ]] ; then
         cd ..
@@ -72,23 +76,13 @@ function bcd() {
 }
 
 # Changes to the directory in the command's argument and shows his content
-function cd() {
+function cs() {
 	cd $1 && ls
 }
+alias cd="cs"
 
 function mkcd() {
     mkdir $1 && cd $1
-}
-
-# Exit faster from terminal/bash
-function e() {
-  jobs_out=$(jobs)
-  if [[ $jobs_out != "" ]] ; then
-    echo $jobs_out
-    return 1
-  fi
-
-  exit
 }
 
 function xo() {
@@ -106,8 +100,10 @@ alias apt-upgrade="sudo bash -c 'apt update && DEBIAN_FRONTEND=noninteractive ap
 
 alias fzf="fzf --height=10"
 
+# functions to operate over docker containers using fzf as a container chooser
 function _choose_container() {
-    local containers=$(docker ps $1 --format "{{.ID}}\t| {{.Image}}\t| {{.Ports}}\t| {{.Names}}")
+    # choose a container from the running containers
+    local containers=$(docker-ps-formatter $1)
     if [ -z "$containers" ] ; then
         echo "No running containers"
         return 1
@@ -118,10 +114,11 @@ function _choose_container() {
         return 1
     fi
 
-    echo $choice | sed "s/\t|//g" | awk '{print $1}'
+    echo $choice | sed "s/|//g" | awk '{print $1}'
 }
 
 function _choose_container_from_all() {
+    # choose a container from all existing containers
     _choose_container "-a"
     if [[ $? -ne 0 ]] ; then
         return 1
@@ -129,19 +126,23 @@ function _choose_container_from_all() {
 }
 
 function docker-exec() {
+    # get an interactive shell on a container
     container_id=$(_choose_container)
     if [[ $? -ne 0 ]] ; then
         echo $container_id
         return
     fi
     
-    docker exec -it $container_id bash
-    if [[ $? -ne 0 ]] ; then
+    docker exec $container_id which bash
+    if [[ $? -eq 0 ]] ; then
+        docker exec -it $container_id bash
+    else
         docker exec -it $container_id sh
     fi
 }
 
 function docker-stop() {
+    # stop a running container
     container_id=$(_choose_container)
     if [[ $? -ne 0 ]] ; then
         echo $container_id
@@ -152,6 +153,7 @@ function docker-stop() {
 }
 
 function docker-stoprm() {
+    # stop a running container and remove it
     container_id=$(_choose_container)
     if [[ $? -ne 0 ]] ; then
         echo $container_id
@@ -163,11 +165,12 @@ function docker-stoprm() {
 }
 
 function docker-rm() {
+    # remove a container
     container_id=$(_choose_container_from_all)
     if [[ $? -ne 0 ]] ; then
         echo $container_id
         return
     fi
 
-    docker rm $container_id
+    docker rm -f $container_id
 }

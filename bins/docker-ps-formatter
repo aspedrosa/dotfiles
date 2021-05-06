@@ -1,0 +1,33 @@
+#!/usr/bin/python3
+
+import subprocess
+import sys
+
+if __name__ == '__main__':
+    com = subprocess.Popen(
+        ["docker", "ps"] + sys.argv[1:] + ["--format", "{{.ID}}\t| {{.Names}}\t| {{.Image}}\t| {{.Ports}}"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+
+    output = com.stdout.read().decode("utf-8")
+
+    if output.endswith("\n"):
+        output = output[:-1]
+
+    if output == "":
+        sys.exit(0)
+
+    lines = output.split("\n")
+    lines = [line.split("\t| ") for line in lines]
+
+    lengths = [1] * 4
+
+    for line in lines:
+        for i, element in enumerate(line):
+            if len(element) > lengths[i]:
+                lengths[i] = len(element)
+
+    for line in lines:
+        format_str = "{{:{}}} | {{:{}}} | {{:{}}} | {{:{}}}".format(*lengths)
+        print(format_str.format(*line))
