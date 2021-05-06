@@ -1,10 +1,11 @@
 {
-    "editor.fontSize": 15,
+    "editor.fontSize": 17,
     "window.zoomLevel": 1,
     "workbench.colorTheme": "Gruvbox Dark (Medium)",
     "keyboard.dispatch": "keyCode",
     "editor.lineNumbers": "relative",
     "vim.vimrc.enable": true,
     "vim.vimrc.path": "~/.vimrc",
-    "explorer.confirmDelete": false
+    "explorer.confirmDelete": false,
+    "C_Cpp.updateChannel": "Insiders"
 }
