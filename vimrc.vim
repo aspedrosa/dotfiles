@@ -97,19 +97,19 @@ set confirm
 " Toggle spell checking on and off
 nmap <silent> <leader>s :set spell!<CR>
 
-if has("autocmd")
-  " Edit vimrc on the fly
-  " autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
+"" autocmd commands
+" Edit vimrc on the fly
+" autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
 
-  " autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=87 " textwith with splitscreen of my pc
+" autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=87 " textwith with splitscreen of my pc
 
-  autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
-  autocmd FileType js setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType js setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
-  " Keep the clipboard after leaving vim
-  autocmd VimLeave * call system("xsel -ib", getreg('+'))
+" Keep the clipboard after leaving vim
+autocmd VimLeave * call system("xsel -ib", getreg('+'))
 
-  if executable("xsel")
+if executable("xsel")
     function! PreserveClipboard()
       call system("xsel -ib", getreg('+'))
     endfunction
@@ -122,7 +122,6 @@ if has("autocmd")
     autocmd VimLeave * call PreserveClipboard()
     nnoremap <silent> <c-z> :call PreserveClipboadAndSuspend()<cr>
     vnoremap <silent> <c-z> :<c-u>call PreserveClipboadAndSuspend()<cr>
-  endif
 endif
 
 " Compile mappings
