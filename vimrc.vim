@@ -1,5 +1,7 @@
 set nocompatible              " be iMproved
 
+let g:python3_host_prog = '/usr/bin/python3.9'
+
 set timeout ttimeoutlen=10
 
 " After exit insert mode a ^] (escape character) is inserted.
