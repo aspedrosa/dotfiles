@@ -7,33 +7,36 @@ set timeout ttimeoutlen=10
 " inoremap <ESC> <ESC><ESC>
 
 let mapleader = ','
-" Inserted when vundle was installed
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'sirver/ultisnips'
-Plugin 'scrooloose/nerdtree'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'mkitt/tabline.vim'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tranvansang/octave.vim'
-Plugin 'morhetz/gruvbox'
-
-call vundle#end()            " required
-filetype plugin indent on    " required
 
 " Enables mouse on vim
 set mouse=a
 
 set background=dark
+if !exists("g:ideavim")
+    " Inserted when vundle was installed
+    filetype off                  " required
+
+    " set the runtime path to include Vundle and initialize
+    set rtp+=~/.vim/bundle/Vundle.vim
+    call vundle#begin()
+
+    " let Vundle manage Vundle, required
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'tpope/vim-surround'
+    Plugin 'tpope/vim-repeat'
+    Plugin 'sirver/ultisnips'
+    Plugin 'scrooloose/nerdtree'
+    Plugin 'ctrlpvim/ctrlp.vim'
+    Plugin 'mkitt/tabline.vim'
+    Plugin 'ryanoasis/vim-devicons'
+    Plugin 'airblade/vim-gitgutter'
+    Plugin 'tranvansang/octave.vim'
+    Plugin 'morhetz/gruvbox'
+    Plugin 'ntpeters/vim-better-whitespace'
+
+    call vundle#end()            " required
+    filetype plugin indent on    " required
+endif
 
 let g:gruvbox_italic=1
 
@@ -137,18 +140,20 @@ let g:NERDTreeDirArrowCollapsible = ' '
 set encoding=utf-8
 
 
-" Move inside wrapped lines.
-nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
-nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
-nnoremap <expr> 0 (v:count == 0 ? 'g0' : '0')
-nnoremap <expr> $ (v:count == 0 ? 'g$' : '$')
-nnoremap <expr> ^ (v:count == 0 ? 'g^' : '^')
+if !exists("g:ideavim")
+    " Move inside wrapped lines.
+    nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+    nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+    nnoremap <expr> 0 (v:count == 0 ? 'g0' : '0')
+    nnoremap <expr> $ (v:count == 0 ? 'g$' : '$')
+    nnoremap <expr> ^ (v:count == 0 ? 'g^' : '^')
 
-vnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
-vnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
-vnoremap <expr> 0 (v:count == 0 ? 'g0' : '0')
-vnoremap <expr> $ (v:count == 0 ? 'g$' : '$')
-vnoremap <expr> ^ (v:count == 0 ? 'g^' : '^')
+    vnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+    vnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+    vnoremap <expr> 0 (v:count == 0 ? 'g0' : '0')
+    vnoremap <expr> $ (v:count == 0 ? 'g$' : '$')
+    vnoremap <expr> ^ (v:count == 0 ? 'g^' : '^')
+endif
 
 " Don't wrap line in the middle of a word
 set linebreak
