@@ -108,6 +108,21 @@ if has("autocmd")
 
   " Keep the clipboard after leaving vim
   autocmd VimLeave * call system("xsel -ib", getreg('+'))
+
+  if executable("xsel")
+    function! PreserveClipboard()
+      call system("xsel -ib", getreg('+'))
+    endfunction
+
+    function! PreserveClipboadAndSuspend()
+      call PreserveClipboard()
+      suspend
+    endfunction
+
+    autocmd VimLeave * call PreserveClipboard()
+    nnoremap <silent> <c-z> :call PreserveClipboadAndSuspend()<cr>
+    vnoremap <silent> <c-z> :<c-u>call PreserveClipboadAndSuspend()<cr>
+  endif
 endif
 
 " Compile mappings
