@@ -134,7 +134,7 @@ function docker-exec() {
         return
     fi
     
-    docker exec $container_id which bash
+    docker exec $container_id which bash &> /dev/null
     if [[ $? -eq 0 ]] ; then
         docker exec -it $container_id bash
     else
