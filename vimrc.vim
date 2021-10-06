@@ -151,12 +151,6 @@ let g:NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = ' '
 let g:NERDTreeDirArrowCollapsible = ' '
 
-" Sets encoding (not having this set was giving me problem on NERDTree)
-" BUT this mess up alt keys. For them to work I need to change for loops
-" on top of this file
-set encoding=utf-8
-
-
 if !exists("g:ideavim")
     " Move inside wrapped lines.
     nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
@@ -205,12 +199,6 @@ autocmd WinEnter *
 "   in a buffer. Ex: Man 3 printf
 runtime! ftplugin/man.vim
 
-" Don't save options and mappings of session (To save space. All those
-"   mappings and options are on vimrc)
-" However if I have a help page open (of vim) all of it's usual options are not gonna
-"   be loaded (ex: nonumbers)
-set sessionoptions-=options
-
 " Change cursor shape when entering insert mode to just a vertical bar
 " instead of a block
 " http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
@@ -226,7 +214,7 @@ set sessionoptions-=options
 " endif
 
 " Make vim use sistem clipboard
-set clipboard=unnamedplus 
+set clipboard=unnamedplus
 
 " Transparent backgroung
 hi Normal guibg=NONE ctermbg=NONE
