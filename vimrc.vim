@@ -233,9 +233,6 @@ hi SpellCap cterm=underline
 hi SpellRare cterm=underline
 hi SpellLocal cterm=underline
 
-" shortcuts to save and quit
-nnoremap <leader>ww :w<CR>
-nnoremap <leader>wq :wq<CR>
 
 " When vim is executed with multiple files as argument open
 "   all of them in tabs
