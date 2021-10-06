@@ -97,7 +97,7 @@ alias ka="killall"
 
 alias reboot="systemctl reboot"
 
-alias apt-upgrade="sudo bash -c 'apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y'"
+alias apt-upgrade="sudo bash -c 'apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y && apt autoremove -y && shutdown -h now'"
 
 alias fzf="fzf --height=10"
 
