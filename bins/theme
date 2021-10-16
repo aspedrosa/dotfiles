@@ -1,0 +1,85 @@
+#!/usr/bin/python3
+
+
+from pathlib import Path
+import argparse
+import os.path
+import subprocess
+
+TOOGLE_ACTION = "toogle"
+SET_ACTION = "set"
+GET_ACTION = "get"
+THEME_FILE = ".theme"
+DARK_VALUE = "dark"
+LIGHT_VALUE = "light"
+DEFAULT_VALUE = DARK_VALUE
+POST_CHANGE_HOOKS = (
+    ("konsole-update-theme",)
+)
+
+def execute_post_change_hooks():
+    for command in POST_CHANGE_HOOKS:
+        subprocess.run(command)
+
+def toogle(theme_file_path, *_):
+    try:
+        with open(theme_file_path, "r+") as f:
+            current = f.read()
+            f.seek(0)
+            if current == DARK_VALUE:
+                f.write(LIGHT_VALUE)
+            else:
+                f.write(DARK_VALUE)
+            f.truncate()
+
+    except FileNotFoundError:
+        with open(theme_file_path, "w") as f:
+            f.write(LIGHT_VALUE)
+
+    execute_post_change_hooks()
+
+def set(theme_file_path, value):
+    if os.path.isfile(theme_file_path):
+        with open(theme_file_path) as f:
+            change = value != f.read()
+    else:
+        change = value != DEFAULT_VALUE
+
+    with open(theme_file_path, "w") as f:
+        f.write(args.value)
+
+    if change:
+        execute_post_change_hooks()
+
+def get(theme_file_path, *_):
+    try:
+        with open(theme_file_path) as f:
+            print(f.read())
+    except FileNotFoundError:
+        print(DEFAULT_VALUE)
+
+def main(args):
+    theme_file_path = os.path.join(Path.home(), THEME_FILE)
+
+    globals()[args.action](
+        *(
+            (theme_file_path,) + ((args.value,) if "value" in args else tuple())
+        )
+    )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    subparser = parser.add_subparsers(dest="action")
+    subparser.required = True
+
+    subparser.add_parser(GET_ACTION)
+
+    set_parser = subparser.add_parser(SET_ACTION)
+    set_parser.add_argument("value", choices=(DARK_VALUE, LIGHT_VALUE))
+
+    subparser.add_parser(TOOGLE_ACTION)
+
+    args = parser.parse_args()
+
+    main(args)

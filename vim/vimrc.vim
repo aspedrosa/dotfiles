@@ -13,7 +13,8 @@ let mapleader = ','
 " Enables mouse on vim
 set mouse=a
 
-set background=dark
+execute "set background=" . system("theme get")
+
 if !exists("g:ideavim")
     " Inserted when vundle was installed
     filetype off                  " required

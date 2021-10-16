@@ -1,0 +1,17 @@
+StatusBar=Disabled
+
+[Desktop Entry]
+DefaultProfile=dark.profile
+
+[KonsoleWindow]
+FocusFollowsMouse=true
+ShowMenuBarByDefault=false
+
+[MainWindow]
+MenuBar=Disabled
+StatusBar=Disabled
+ToolBarsMovable=Disabled
+
+[Notification Messages]
+CloseAllTabs=true
+CloseSingleTab=true
