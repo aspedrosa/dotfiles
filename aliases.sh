@@ -87,8 +87,7 @@ function mkcd() {
 
 function xo() {
     for arg in "$@" ; do
-        xdg-open $arg &> /dev/null &
-        disown
+        nohup xdg-open $arg &> /dev/null
     done
 }
 
