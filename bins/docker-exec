@@ -9,7 +9,7 @@ while getopts "h1" opt ; do
             # TODO print help
             exit 0
         ;;
-        [1])
+        1)
             options="-1"
         ;;
         *)
