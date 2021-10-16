@@ -1,0 +1,29 @@
+#!/bin/sh
+# stop a running container
+
+options=""
+
+while getopts "h1" opt ; do
+    case "$opt" in
+        h)
+            # TODO print help
+            exit 0
+        ;;
+        [1])
+            options="-1"
+        ;;
+        *)
+            exit 1
+        ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+container_id=$(choose-container -m $options "$*")
+if [ $? -ne 0 ] ; then
+    echo $container_id
+    exit 1
+fi
+
+docker stop $container_id

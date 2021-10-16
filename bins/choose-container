@@ -1,0 +1,68 @@
+#!/bin/bash
+# I need bash here because sh does not support arrays
+
+docker_ps_args=""
+fzf_args=""
+
+while getopts "hm1a" opt ; do
+    case "$opt" in
+        h)
+            # TODO print help
+            exit 0
+        ;;
+        a)
+            docker_ps_args="-a"
+        ;;
+        [1m])
+            fzf_args="$fzf_args -$opt"
+        ;;
+        *)
+            exit 1
+        ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+output=$(docker ps $docker_ps_args --format "{{.ID}}|{{.Names}}|{{.Image}}|{{.Ports}}")
+
+# create a printf format string, based on the max length of each field
+format_string=$(<<< $output awk -F"|" '
+{for (i=1; i<=NF; i++) max[i]=(length($i)>max[i]?length($i):max[i])}
+END {for (i=1; i<=NF; i++) printf "%%%ds%s", max[i], (i==NF?"\\n":" ")}
+')
+
+previous_ifs="$IFS"
+IFS="
+"
+
+# apply the format string for every line of the output
+choices=$(
+for line in $output ; do
+    IFS="|"
+
+    # split the line by the | character
+    read -ra arr <<< "$line"
+
+    printf "$format_string" "${arr[@]}"
+done
+)
+
+IFS="$previous_ifs"
+
+if [ -z "$choices" ] ; then
+    echo "No running containers"
+    exit 1
+fi
+
+
+if [[ ! -z "$@" ]] ; then
+    choices=$(<<< $choices fzf --height=10 $fzf_args -q "$*")
+else
+    choices=$(<<< $choices fzf --height=10 $fzf_args)
+fi
+if [ -z "$choices" ] ; then
+    exit 1
+fi
+
+<<< $choices awk '{print $1}'

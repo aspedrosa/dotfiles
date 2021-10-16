@@ -1,0 +1,34 @@
+#!/bin/sh
+# get an interactive shell on a container
+
+options=""
+
+while getopts "h1" opt ; do
+    case "$opt" in
+        h)
+            # TODO print help
+            exit 0
+        ;;
+        [1])
+            options="-1"
+        ;;
+        *)
+            exit 1
+        ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+container_id=$(choose-container $options "$*")
+if [ $? -ne 0 ] ; then
+    echo $container_id
+    exit 1
+fi
+
+docker exec $container_id which bash 2>&1 >/dev/null
+if [ $? -eq 0 ] ; then
+    docker exec -it $container_id bash
+else
+    docker exec -it $container_id sh
+fi
