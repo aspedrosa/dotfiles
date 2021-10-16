@@ -32,12 +32,16 @@ snippet bf
 endsnippet
 
 snippet figure
-\begin{figure}[h]
+\begin{figure}${1:[H]}
 	\center
-	\includegraphics[width=${1:\textwidth}]{$2}
-	\caption{$3}
-	\label{fig:$2}
+	\includegraphics[width=${2:\textwidth}]{$3}
+	\caption{$4}
+	\label{fig:$3}
 \end{figure}
+endsnippet
+
+snippet figref
+\ref{fig:$1} $0
 endsnippet
 
 snippet base
