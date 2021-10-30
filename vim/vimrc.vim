@@ -141,15 +141,15 @@ nmap <leader>v :tabedit ~/.vimrc<CR>
 " Toggle NerdTree
 nmap <leader>n :NERDTreeToggle<CR>
 
-" Display NerdTree on all tabs
-autocmd BufWinEnter * silent NERDTreeMirror
+" Show numbers on nerd tree windows
+let NERDTreeShowLineNumbers=1
 
 " Show hidden files
 let g:NERDTreeShowHidden=1
 
 " Change arrows of NERDTree.
-let g:NERDTreeDirArrowExpandable = ' '
-let g:NERDTreeDirArrowCollapsible = ' '
+"let g:NERDTreeDirArrowExpandable = ' '
+"let g:NERDTreeDirArrowCollapsible = ' '
 
 if !exists("g:ideavim")
     " Move inside wrapped lines.
