@@ -5,6 +5,7 @@ theme=$(theme get)
 sed -i "s/DefaultProfile=.*/DefaultProfile=$theme.profile/" ~/.config/konsolerc
 
 for konsole in $(qdbus "org.kde.konsole-*") ; do
+    qdbus $konsole /Windows/1 setDefaultProfile $theme
     for session in $(qdbus $konsole /Windows/1 sessionList) ; do
         qdbus $konsole /Sessions/$session setProfile $theme
     done
