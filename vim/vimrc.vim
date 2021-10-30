@@ -100,7 +100,7 @@ nmap <silent> <leader>s :set spell!<CR>
 
 "" autocmd commands
 " Edit vimrc on the fly
-" autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
+autocmd bufwritepost vimrc.vim source ~/dotfiles/vimrc.vim
 
 " autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=87 " textwith with splitscreen of my pc
 
@@ -136,7 +136,7 @@ if exists('g:loaded_webdevicons')
 endif
 
 " Map to start editing the vimrc file
-nmap <leader>v :tabedit ~/dotfiles/vimrc.vim<CR>
+nmap <leader>v :tabedit ~/.vimrc<CR>
 
 " Toggle NerdTree
 nmap <leader>n :NERDTreeToggle<CR>
