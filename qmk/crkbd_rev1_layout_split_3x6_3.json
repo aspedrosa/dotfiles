@@ -122,7 +122,7 @@
       "KC_NO",
       "KC_NO",
       "KC_NO",
-      "KC_NO",
+      "KC_DEL",
       "KC_INS",
       "KC_NO",
       "KC_NO",
@@ -180,7 +180,7 @@
       "KC_TRNS",
       "MO(4)",
       "KC_LALT",
-      "KC_NO"
+      "KC_LCTL"
     ],
     [
       "KC_NO",
