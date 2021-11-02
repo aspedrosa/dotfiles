@@ -1,4 +1,4 @@
 set clipboard+=ideaput
 
 let g:ideavim = 1
-source ~/.vimrc
+source ~/dotfiles/vim/init.vim
