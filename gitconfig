@@ -1,0 +1,4 @@
+# vi: ft=gitconfig
+[user]
+	name = aspedrosa
+	email = aspedrosa@ua.pt
