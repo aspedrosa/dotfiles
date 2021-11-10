@@ -50,9 +50,8 @@ git clone --recurse-submodules -j8 git@github.com:aspedrosa/dotfiles.git ~/dotfi
 
 # vim
 git clone https://github.com/VundleVim/Vundle.vim.git ~/dotfiles/vim/bundle/Vundle.vim
-ln -s ~/dotfiles/vim ~/.vim
-mkdir -p .config/nvim
-ln -s ~/dotfiles/vim/init.vim ~/.config/nvim/init.vim
+ln -s ~/dotfiles/vim/dotvim ~/.vim
+ln -s ~/dotfiles/vim/nvim ~/.config/nvim
 ln -s ~/dotfiles/vim/ideavimrc.vim ~/.ideavimrc
 
 # vs code
