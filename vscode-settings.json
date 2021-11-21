@@ -5,7 +5,7 @@
     "keyboard.dispatch": "keyCode",
     "editor.lineNumbers": "relative",
     "vim.vimrc.enable": true,
-    "vim.vimrc.path": "~/dotfiles/vim/init.vim",
+    "vim.vimrc.path": "~/.config/nvim/init.vim",
     "explorer.confirmDelete": false,
     "C_Cpp.updateChannel": "Insiders"
 }
