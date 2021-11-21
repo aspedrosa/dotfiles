@@ -8,12 +8,11 @@ FocusFollowsMouse=true
 ShowMenuBarByDefault=false
 
 [MainWindow]
-HDMI-1 eDP-1 Height 1080=1005
-HDMI-1 eDP-1 Width 1920=960
-HDMI-1 eDP-1 XPosition=2880
-HDMI-1 eDP-1 YPosition=29
-MenuBar=Disabled
-State=AAAA/wAAAAD9AAAAAAAAB4AAAAPtAAAABAAAAAQAAAAIAAAACPwAAAAA
+HDMI-1 eDP-1 Height 1080=1080
+HDMI-1 eDP-1 Width 1920=1920
+HDMI-1 eDP-1 XPosition=1920
+HDMI-1 eDP-1 YPosition=0
+State=AAAA/wAAAAD9AAAAAAAAB4AAAAPPAAAABAAAAAQAAAAIAAAACPwAAAAA
 StatusBar=Disabled
 ToolBarsMovable=Disabled
 eDP-1 HDMI-1 Height 1080=744
