@@ -19,7 +19,7 @@ sudo sed -i "/^deb|^deb-src/s/#/ contrib non-free/" /etc/apt/source.list
 sudo apt update
 
 sudo apt install -y \
-    neovim \
+    neovim xclip \
     keepass2 \
     htop tree \
     pavucontrol \
