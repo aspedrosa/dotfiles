@@ -24,9 +24,14 @@ sudo apt install -y \
     htop tree \
     pavucontrol \
     qbittorrent \
+    thunderbird \
     docker docker-compose \
-    zsh \
+    zsh fzf \
     brave-browser chromium \
+    vlc \
+    texlive texlive-science texlive-latex-extra texlive-lang-portuguese latexmk texlive-bibtex-extra biber \
+    openjdk-11-jdk openjdk-11-doc openjdk-11-source \
+    mumble mumble-server avahi-daemon iproute2 jq\
     extract \
     snapd \
     isenkram-cli \
@@ -41,8 +46,11 @@ sudo snap install intellij-idea-ultimate --classic
 sudo snap install goland --classic
 sudo snap install code --classic
 sudo snap install spotify
+sudo snap install postman
 
 sudo /sbin/usermod -a -G docker $USER
+
+sudo sh -c "systemctl stop mumble-server.service && systemctl disable mumble-server.service"
 
 sudo /sbin/isenkram-autoinstall-firmware
 
@@ -96,5 +104,8 @@ mkdir -p ~/.local/share/konsole
 for profile in $(ls --color=no ~/dotfiles/konsole/profiles) ; do
     ln -s ~/dotfiles/konsole/profiles/$profile ~/.local/share/konsole/$profile
 done
+
+# increase the number of open files. usefull for IDEs
+sudo sh -c 'echo "fs.inotify.max_user_watches = 524288" >> /etc/sysctl.conf && sysctl -p --system'
 
 sudo sh -c "apt purge -y plasma-discover plasma-discover-common isenkram-cli && apt autoremove -y"
