@@ -46,13 +46,11 @@ sudo /sbin/usermod -a -G docker $USER
 
 sudo /sbin/isenkram-autoinstall-firmware
 
-git clone --recurse-submodules -j8 git@github.com:aspedrosa/dotfiles.git ~/dotfiles
-
 # vim
-git clone https://github.com/VundleVim/Vundle.vim.git ~/dotfiles/vim/bundle/Vundle.vim
 ln -s ~/dotfiles/vim/dotvim ~/.vim
 ln -s ~/dotfiles/vim/nvim ~/.config/nvim
 ln -s ~/dotfiles/vim/ideavimrc.vim ~/.ideavimrc
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 # vs code
 mkdir -p ~/.config/Code/User
