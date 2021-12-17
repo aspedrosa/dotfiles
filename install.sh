@@ -58,7 +58,9 @@ sudo /sbin/isenkram-autoinstall-firmware
 ln -s ~/dotfiles/vim/dotvim ~/.vim
 ln -s ~/dotfiles/vim/nvim ~/.config/nvim
 ln -s ~/dotfiles/vim/ideavimrc.vim ~/.ideavimrc
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+nvim +PlugInstall +qall
 
 # vs code
 mkdir -p ~/.config/Code/User

@@ -16,29 +16,21 @@ set mouse=a
 execute "set background=" . system("theme get")
 
 if !exists("g:ideavim")
-    " Inserted when vundle was installed
-    filetype off                  " required
+    call plug#begin('~/.vim/plugged')
 
-    " set the runtime path to include Vundle and initialize
-    set rtp+=~/.vim/bundle/Vundle.vim
-    call vundle#begin()
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-repeat'
+    Plug 'sirver/ultisnips'
+    Plug 'scrooloose/nerdtree'
+    Plug 'ctrlpvim/ctrlp.vim'
+    Plug 'mkitt/tabline.vim'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'tranvansang/octave.vim'
+    Plug 'morhetz/gruvbox'
+    Plug 'ntpeters/vim-better-whitespace'
 
-    " let Vundle manage Vundle, required
-    Plugin 'VundleVim/Vundle.vim'
-    Plugin 'tpope/vim-surround'
-    Plugin 'tpope/vim-repeat'
-    Plugin 'sirver/ultisnips'
-    Plugin 'scrooloose/nerdtree'
-    Plugin 'ctrlpvim/ctrlp.vim'
-    Plugin 'mkitt/tabline.vim'
-    Plugin 'ryanoasis/vim-devicons'
-    Plugin 'airblade/vim-gitgutter'
-    Plugin 'tranvansang/octave.vim'
-    Plugin 'morhetz/gruvbox'
-    Plugin 'ntpeters/vim-better-whitespace'
-
-    call vundle#end()            " required
-    filetype plugin indent on    " required
+    call plug#end()
 endif
 
 let g:gruvbox_italic=1
