@@ -19,12 +19,11 @@ if !exists("g:ideavim")
     call plug#begin('~/.vim/plugged')
 
     Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-repeat'
     Plug 'sirver/ultisnips'
-    Plug 'scrooloose/nerdtree'
+    Plug 'kyazdani42/nvim-tree.lua'
     Plug 'ctrlpvim/ctrlp.vim'
-    Plug 'mkitt/tabline.vim'
-    Plug 'ryanoasis/vim-devicons'
+    Plug 'kyazdani42/nvim-web-devicons'
+    Plug 'romgrk/barbar.nvim'
     Plug 'airblade/vim-gitgutter'
     Plug 'tranvansang/octave.vim'
     Plug 'morhetz/gruvbox'
@@ -130,18 +129,20 @@ endif
 " Map to start editing the vimrc file
 nmap <leader>v :tabedit ~/.config/nvim/init.vim<CR>
 
+
+" File explorer
+lua << EOF
+    require'nvim-tree'.setup {
+        view = {
+            number = true,
+            relativenumber = true
+        }
+    }
+EOF
+
 " Toggle NerdTree
-nmap <leader>n :NERDTreeToggle<CR>
+nmap <leader>n :NvimTreeToggle<CR>
 
-" Show numbers on nerd tree windows
-let NERDTreeShowLineNumbers=1
-
-" Show hidden files
-let g:NERDTreeShowHidden=1
-
-" Change arrows of NERDTree.
-"let g:NERDTreeDirArrowExpandable = ' '
-"let g:NERDTreeDirArrowCollapsible = ' '
 
 if !exists("g:ideavim")
     " Move inside wrapped lines.
