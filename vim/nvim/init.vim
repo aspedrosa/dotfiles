@@ -1,6 +1,6 @@
 set nocompatible              " be iMproved
 
-let g:python3_host_prog = '/usr/bin/python3.9'
+let g:python3_host_prog = '/usr/bin/python3'
 
 set timeout ttimeoutlen=10
 
@@ -50,10 +50,6 @@ set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 set number relativenumber
 
-set showcmd
-
-" Highlighting on typing, highlighting matches
-set incsearch hlsearch
 " Ignore case on searches
 set ignorecase
 nmap ,h :noh<CR>
@@ -83,7 +79,6 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-tab>" "Not Working
 
-set wildmenu
 set confirm
 
 " Toggle spell checking on and off
@@ -140,8 +135,14 @@ lua << EOF
     }
 EOF
 
-" Toggle NerdTree
+" Toggle NvimTree
 nmap <leader>n :NvimTreeToggle<CR>
+
+" Whenever I enter a NERDTree buffer check if is the only window, if it is quit
+autocmd WinEnter *
+    \ if winnr('$') == 1 && exists("t:NERDTreeBufName") && winnr() == bufwinnr(t:NERDTreeBufName) |
+    \   quit |
+    \ endif
 
 
 if !exists("g:ideavim")
@@ -182,30 +183,6 @@ set whichwrap+=h,l
 " New splits appear below(horizontal) or right(vertical)
 set splitbelow splitright
 
-" Whenever I enter a NERDTree buffer check if is the only window, if it is quit
-autocmd WinEnter *
-    \ if winnr('$') == 1 && exists("t:NERDTreeBufName") && winnr() == bufwinnr(t:NERDTreeBufName) |
-    \   quit |
-    \ endif
-
-" Useful if developing bash/c/c++. Allow that man pages can be seen inside vim
-"   in a buffer. Ex: Man 3 printf
-runtime! ftplugin/man.vim
-
-" Change cursor shape when entering insert mode to just a vertical bar
-" instead of a block
-" http://vim.wikia.com/wiki/Change_cursor_shape_in_different_modes
-" if has("autocmd")
-"   au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
-"   au InsertEnter,InsertChange *
-"     \ if v:insertmode == 'i' |
-"     \   silent execute '!echo -ne "\e[6 q"' | redraw! |
-"     \ elseif v:insertmode == 'r' |
-"     \   silent execute '!echo -ne "\e[4 q"' | redraw! |
-"     \ endif
-"   au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
-" endif
-
 " Make vim use sistem clipboard
 set clipboard=unnamedplus
 
@@ -231,7 +208,3 @@ let g:strip_whitespace_confirm=0
 let g:strip_only_modified_lines=1
 let g:strip_whitelines_at_eof=1
 let g:show_spaces_that_precede_tabs=1
-
-" When vim is executed with multiple files as argument open
-"   all of them in tabs
-silent tab all
