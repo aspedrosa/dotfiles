@@ -13,7 +13,7 @@ let mapleader = ','
 " Enables mouse on vim
 set mouse=a
 
-execute "set background=" . system("theme get")
+execute "set background=" . system("global-theme get")
 
 if !exists("g:ideavim")
     call plug#begin('~/.vim/plugged')

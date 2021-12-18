@@ -1,6 +1,6 @@
 #!/bin/sh
 
-theme=$(theme get)
+theme=$(global-theme get)
 
 sed -i "s/DefaultProfile=.*/DefaultProfile=$theme.profile/" ~/.config/konsolerc
 
