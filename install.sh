@@ -7,19 +7,40 @@
 
 balooctl disable
 
-# docker repos
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+DISTRO=$(lsb_release -is)
 
-# brave repos
-sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+if [ $DISTRO = "Debian" ] ; then
+    INSTALL_COMMAND="apt install -y"
 
-sudo sed -i "/^deb|^deb-src/s/#/ contrib non-free/" /etc/apt/source.list
-sudo apt update
+    # update repositories
+    # docker repos
+    curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt install -y \
-    neovim xclip \
+    # brave repos
+    sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+
+    # vscode repos
+    curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+
+    sudo sed -i "/^deb|^deb-src/s/#/ contrib non-free/" /etc/apt/source.list
+    sudo apt update
+
+    DISTRO_SPECIFIC_PACKAGES="brave-browser batcat neovim"
+elif [ $DISTRO = "Arch" ] ; then
+    INSTALL_COMMAND="pacman -S --noconfirm"
+
+    # update repositories
+    sudo pacman -Syy
+
+    DISTRO_SPECIFIC_PACKAGES="yay discord bat neovim"
+fi
+
+
+sudo $INSTALL_COMMAND \
+    xclip code \
     keepass2 \
     htop tree \
     pavucontrol \
@@ -27,26 +48,42 @@ sudo apt install -y \
     thunderbird \
     docker docker-compose \
     zsh fzf \
-    brave-browser chromium \
+    chromium \
     vlc \
     texlive texlive-science texlive-latex-extra texlive-lang-portuguese latexmk texlive-bibtex-extra biber \
     openjdk-11-jdk openjdk-11-doc openjdk-11-source \
     mumble mumble-server avahi-daemon iproute2 jq\
     extract \
-    snapd \
     isenkram-cli \
+    ripgrep \
     curl \
     ca-certificates gnupg lsb-release \
     make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
+    $DISTRO_SPECIFIC_PACKAGES
 
-sudo snap install slack --classic
-sudo snap install pycharm-professional --classic
-sudo snap install clion --classic
-sudo snap install intellij-idea-ultimate --classic
-sudo snap install goland --classic
-sudo snap install code --classic
-sudo snap install spotify
-sudo snap install postman
+
+if [ $DISTRO = "Debian" ] ; then
+    sudo apt install -y snapd
+    #sudo snap install slack --classic
+    #sudo snap install pycharm-professional --classic
+    #sudo snap install clion --classic
+    #sudo snap install intellij-idea-ultimate --classic
+    #sudo snap install goland --classic
+    sudo snap install spotify
+    sudo snap install postman
+
+    # install latest neovim
+    wget -P /tmp https://github.com/neovim/neovim/releases/download/v0.6.0/nvim.appimage
+    (
+        cd /tmp
+        ./nvim.appimage --appimage-extract
+	cd squashfs-root/usr
+	find . -type f -exec install -Dm 755 "{}" "/usr/{}" \;
+    )
+
+elif [ $DISTRO = "Arch" ] ; then
+    yay -S spotify brave-bin
+fi
 
 sudo /sbin/usermod -a -G docker $USER
 
@@ -110,4 +147,7 @@ done
 # increase the number of open files. usefull for IDEs
 sudo sh -c 'echo "fs.inotify.max_user_watches = 524288" >> /etc/sysctl.conf && sysctl -p --system'
 
-sudo sh -c "apt purge -y plasma-discover plasma-discover-common isenkram-cli && apt autoremove -y"
+# remove unused packages
+if [ $DISTRO = "Debian" ] ; then
+    sudo sh -c "apt purge -y plasma-discover plasma-discover-common isenkram-cli && apt autoremove -y"
+fi
