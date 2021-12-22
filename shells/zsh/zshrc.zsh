@@ -164,10 +164,6 @@ SAVEHIST=5000
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export VISUAL=vim
-export EDITOR="$VISUAL"
-export TERM=xterm-256color #fixex ssh cmds problems
-
 source $HOME/dotfiles/shells/aliases.sh
 
 bindkey '^ ' autosuggest-execute
