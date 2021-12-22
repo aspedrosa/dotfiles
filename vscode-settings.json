@@ -7,5 +7,6 @@
     "vim.vimrc.enable": true,
     "vim.vimrc.path": "~/.config/nvim/init.vim",
     "explorer.confirmDelete": false,
-    "C_Cpp.updateChannel": "Insiders"
+    "C_Cpp.updateChannel": "Insiders",
+    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
 }
