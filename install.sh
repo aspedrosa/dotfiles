@@ -1,10 +1,5 @@
 #!/bin/sh
 
-# TODO
-# - diactivate clipboard app thing
-# - install gruvbox konsole theme
-# - setup github ssh key
-
 balooctl disable
 
 DISTRO=$(lsb_release -is)
@@ -25,10 +20,14 @@ if [ $DISTRO = "Debian" ] ; then
     curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
     sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
 
-    sudo sed -i "/^deb|^deb-src/s/#/ contrib non-free/" /etc/apt/source.list
+    # spotify repos
+    curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
+    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
+    sudo sed -iE "/^deb|^deb-src /s/$/ contrib non-free/" /etc/apt/source.list
     sudo apt update
 
-    DISTRO_SPECIFIC_PACKAGES="brave-browser batcat neovim"
+    DISTRO_SPECIFIC_PACKAGES="brave-browser batcat isenkram-cli spotify-client"
 elif [ $DISTRO = "Arch" ] ; then
     INSTALL_COMMAND="pacman -S --noconfirm"
 
@@ -41,7 +40,7 @@ fi
 
 sudo $INSTALL_COMMAND \
     xclip code \
-    keepass2 \
+    keepassxc \
     htop tree \
     pavucontrol \
     qbittorrent \
@@ -52,9 +51,8 @@ sudo $INSTALL_COMMAND \
     vlc \
     texlive texlive-science texlive-latex-extra texlive-lang-portuguese latexmk texlive-bibtex-extra biber \
     openjdk-11-jdk openjdk-11-doc openjdk-11-source \
-    mumble mumble-server avahi-daemon iproute2 jq\
+    mumble mumble-server avahi-daemon iproute2 jq \
     extract \
-    isenkram-cli \
     ripgrep \
     curl \
     ca-certificates gnupg lsb-release \
@@ -63,22 +61,35 @@ sudo $INSTALL_COMMAND \
 
 
 if [ $DISTRO = "Debian" ] ; then
-    sudo apt install -y snapd
-    #sudo snap install slack --classic
+    sudo /sbin/isenkram-autoinstall-firmware
+
+    wget -O /tmp/slack.deb https://downloads.slack-edge.com/releases/linux/4.23.0/prod/x64/slack-desktop-4.23.0-amd64.deb
+    sudo apt install -y /tmp/slack.deb
+
+    wget https://dl.pstmn.io/download/latest/linux64 -O /tmp/postman.tar.gz
+    sudo tar -xzf /tmp/postman.tar.gz -C /opt
+    sudo ln -s /opt/Postman/Postman /usr/local/bin/postman
+    sudo sh -c "echo '[Desktop Entry]
+Encoding=UTF-8
+Name=Postman
+Exec=/opt/Postman/app/Postman %U
+Icon=/opt/Postman/app/resources/app/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;' > /usr/local/share/applications/Postman.desktop"
+
     #sudo snap install pycharm-professional --classic
     #sudo snap install clion --classic
     #sudo snap install intellij-idea-ultimate --classic
     #sudo snap install goland --classic
-    sudo snap install spotify
-    sudo snap install postman
 
     # install latest neovim
-    wget -P /tmp https://github.com/neovim/neovim/releases/download/v0.6.0/nvim.appimage
+    wget -P /tmp https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
     (
         cd /tmp
         ./nvim.appimage --appimage-extract
-	cd squashfs-root/usr
-	find . -type f -exec install -Dm 755 "{}" "/usr/{}" \;
+        cd squashfs-root/usr
+        find . -type f -exec install -Dm 755 "{}" "/usr/{}" \;
     )
 
 elif [ $DISTRO = "Arch" ] ; then
@@ -88,8 +99,6 @@ fi
 sudo /sbin/usermod -a -G docker $USER
 
 sudo sh -c "systemctl stop mumble-server.service && systemctl disable mumble-server.service"
-
-sudo /sbin/isenkram-autoinstall-firmware
 
 # vim
 ln -s ~/dotfiles/vim/dotvim ~/.vim
@@ -115,8 +124,8 @@ rm -rf /tmp/nerd-fonts
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"  # this will change the default shell
 rm ~/.zshrc  # the intallation of ohmyzsh creates a default zshrc file
 ln -s ~/dotfiles/shells/zsh/zshrc.zsh ~/.zshrc
-ln -s ~/dotfiles/shells/zsh/zprofile.zsh ~/.zprofile
 ln -s ~/dotfiles/shells/profile.sh ~/.profile
+ln -s ~/.profile ~/.zprofile
 git clone https://github.com/romkatv/powerlevel10k ~/.oh-my-zsh/themes/powerlevel10k
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -144,10 +153,16 @@ for profile in $(ls --color=no ~/dotfiles/konsole/profiles) ; do
     ln -s ~/dotfiles/konsole/profiles/$profile ~/.local/share/konsole/$profile
 done
 
-# increase the number of open files. usefull for IDEs
+# increase the number of open files. usefull for Jetbrains IDEs
 sudo sh -c 'echo "fs.inotify.max_user_watches = 524288" >> /etc/sysctl.conf && sysctl -p --system'
 
 # remove unused packages
 if [ $DISTRO = "Debian" ] ; then
-    sudo sh -c "apt purge -y plasma-discover plasma-discover-common isenkram-cli && apt autoremove -y"
+    sudo sh -c "apt purge plasma-discover plasma-discover-common isenkram-cli && apt autoremove -y"
 fi
+
+echo "Next manual steps:"
+echo "- Deactivate clipboard app thingy"
+echo "- Install gruvbox konsole theme"
+echo "- Setup github ssh key"
+echo "- Install go"
