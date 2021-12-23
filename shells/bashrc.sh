@@ -29,9 +29,6 @@ shopt -s globstar
 
 source ~/dotfiles/shells/aliases.sh
 
-export VISUAL=vim
-export EDITOR="$VISUAL"
-
 # Customize prompt
 export PS1="\[\e[31m\u @ \h\] \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
 
