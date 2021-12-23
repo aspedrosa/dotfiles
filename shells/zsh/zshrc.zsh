@@ -109,7 +109,7 @@ POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
 
 POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%{%B%F{yellow}%K{blue}%} $ %{%b%f%k%F{blue}%} %{%f%}"
 
-POWERLEVEL9K_CONTEXT_TEMPLATE=" %{%n%}  %{`hostname -f`%}"
+POWERLEVEL9K_CONTEXT_TEMPLATE=" %{%n%}  %{`cat /etc/hostname`%}"
 
 POWERLEVEL9K_DISABLE_RPROMPT=true
 
