@@ -12,7 +12,7 @@ function b() {
     if [[ $# -eq 0 ]] ; then
         cd ..
     elif [[ $# -eq 1 ]] ; then
-        if ! [[ $1 =~ "^[0-9]+$" ]] ; then
+        if echo $1 | grep -Eqv "^[0-9+]$" ; then
             >&2 echo "Argument should be a number"
             return 1
         fi
@@ -41,7 +41,7 @@ function bcd() {
     if [[ $# -eq 0 ]] ; then
         cd ..
     elif [[ $# -eq 1 ]] ; then
-        if [[ $1 =~ "^[0-9]+$" ]] ; then
+        if echo $1 | grep -Eq "^[0-9+]$" ; then
             b $1
         else
             b &> /dev/null
@@ -49,7 +49,7 @@ function bcd() {
             ls
         fi
     elif [[ $# -eq 2 ]] ; then
-        if ! [[ $1 =~ "^[0-9]+$" ]] ; then
+        if echo $1 | grep -Eqv "^[0-9+]$" ; then
             >&2 echo "When providing two arguments the first should be a number"
             return 1
         fi
