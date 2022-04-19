@@ -153,6 +153,9 @@ for profile in $(ls --color=no ~/dotfiles/konsole/profiles) ; do
     ln -s ~/dotfiles/konsole/profiles/$profile ~/.local/share/konsole/$profile
 done
 
+# other configs
+ln -s ~/dotfiles/mpv.conf ~/.config/mpv/input.conf
+
 # increase the number of open files. usefull for Jetbrains IDEs
 sudo sh -c 'echo "fs.inotify.max_user_watches = 524288" >> /etc/sysctl.conf && sysctl -p --system'
 
