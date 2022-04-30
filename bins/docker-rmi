@@ -1,0 +1,45 @@
+#!/bin/sh
+
+docker_image_args=""
+fzf_args=""
+
+while getopts "h1af" opt ; do
+    case "$opt" in
+        h)
+            # TODO print help
+            exit 0
+        ;;
+        a)
+            docker_image_args="-a"
+        ;;
+        f)
+            docker_rmi_args="-f"
+        ;;
+        1)
+            fzf_args="-1"
+        ;;
+        *)
+            exit 1
+        ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+choices=$(docker image ls | sed 1d)
+
+if [ -z "$choices" ] ; then
+    echo "No images found"
+    exit 1
+fi
+
+if [ ! -z "$@" ] ; then
+    choices=$(echo "$choices" | fzf --height=10 -m $fzf_args -q "$*")
+else
+    choices=$(echo "$choices" | fzf --height=10 -m $fzf_args)
+fi
+if [ -z "$choices" ] ; then
+    exit 1
+fi
+
+echo "$choices" | awk '{print $3}' | xargs -r docker rmi
