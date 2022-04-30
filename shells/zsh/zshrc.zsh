@@ -165,6 +165,7 @@ SAVEHIST=5000
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 source $HOME/dotfiles/shells/aliases.sh
+source $HOME/dotfiles/shells/functions.sh
 
 bindkey '^ ' autosuggest-execute
 

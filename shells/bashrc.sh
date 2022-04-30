@@ -28,6 +28,7 @@ shopt -s checkwinsize
 shopt -s globstar
 
 source ~/dotfiles/shells/aliases.sh
+source ~/dotfiles/shells/functions.sh
 
 # Customize prompt
 export PS1="\[\e[31m\u @ \h\] \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
