@@ -16,3 +16,5 @@
 	defaultBranch = main
 [core]
 	autocrlf = input
+[pull]
+	ff = only
