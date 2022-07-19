@@ -38,20 +38,3 @@ sudo usermod -aG vboxusers $USER
 
 https://askubuntu.com/a/947782
 
-## i3 specific installation steps
-```sh
-sudo pacman -S
-  termite
-
-# set termite as default terminal
-sudo sh -c 'echo "#!/bin/sh
-
-termite $@" > /usr/bin/terminal'
-
-# create simbolic links to i3 config files
-ln -s $HOME/dotfiles/i3/i3 $HOME/.i3
-ln -s $HOME/dotfiles/i3/i3status.conf $HOME/.i3status.conf
-
-# create simbolic links to termite config files
-ln -s $HOME/dotfiles/termite $HOME/.conf/termite
-```
