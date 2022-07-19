@@ -20,14 +20,16 @@ if !exists("g:ideavim")
 
     Plug 'tpope/vim-surround'
     Plug 'sirver/ultisnips'
-    Plug 'kyazdani42/nvim-tree.lua'
+    Plug 'preservim/nerdtree'
     Plug 'ctrlpvim/ctrlp.vim'
+
     Plug 'kyazdani42/nvim-web-devicons'
     Plug 'romgrk/barbar.nvim'
+
     Plug 'airblade/vim-gitgutter'
-    Plug 'tranvansang/octave.vim'
     Plug 'morhetz/gruvbox'
     Plug 'ntpeters/vim-better-whitespace'
+    Plug 'ryanoasis/vim-devicons'
 
     call plug#end()
 endif
@@ -116,33 +118,17 @@ nnoremap <leader>cl :w<CR>:!latexmake<CR>
 nnoremap <leader>cb :w<CR>:!bibtexmake<CR>
 nnoremap <leader>cm :w<CR>:!make -j 12<CR>
 
-" After a re-source, fix syntax matching issues (concealing brackets):
-if exists('g:loaded_webdevicons')
-  call webdevicons#refresh()
-endif
-
 " Map to start editing the vimrc file
 nmap <leader>v :tabedit ~/.config/nvim/init.vim<CR>
 
 
-" File explorer
-lua << EOF
-    require'nvim-tree'.setup {
-        view = {
-            number = true,
-            relativenumber = true
-        }
-    }
-EOF
+" Toggle NERDTree
+nmap <leader>n :NERDTreeToggle<CR>
 
-" Toggle NvimTree
-nmap <leader>n :NvimTreeToggle<CR>
-
-" Whenever I enter a NERDTree buffer check if is the only window, if it is quit
-autocmd WinEnter *
-    \ if winnr('$') == 1 && exists("t:NERDTreeBufName") && winnr() == bufwinnr(t:NERDTreeBufName) |
-    \   quit |
-    \ endif
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 
 if !exists("g:ideavim")
