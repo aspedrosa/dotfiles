@@ -26,17 +26,17 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-if go 2> /dev/null ; then
+if go &> /dev/null ; then
     export PATH="$PATH:/usr/local/go/bin"
 fi
 
-if pyenv 2> /dev/null ; then
+if pyenv &> /dev/null ; then
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
 fi
 
-if cargo 2> /dev/null ; then
+if cargo &> /dev/null ; then
     . "$HOME/.cargo/env"
 fi
 
