@@ -26,12 +26,19 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-PATH="/snap/bin:$PATH"
-PATH="$PATH:/usr/local/go/bin"
+if go 2> /dev/null ; then
+    export PATH="$PATH:/usr/local/go/bin"
+fi
 
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
+if pyenv 2> /dev/null ; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init --path)"
+fi
+
+if cargo 2> /dev/null ; then
+    . "$HOME/.cargo/env"
+fi
 
 export VISUAL=nvim
 export EDITOR="$VISUAL"
