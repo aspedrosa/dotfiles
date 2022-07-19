@@ -1,0 +1,30 @@
+{
+	"segments": {
+		"right": [
+			{
+				"function": "powerline.segments.common.time.date"
+			},
+			{
+				"function": "powerline.segments.common.time.date",
+				"name": "time",
+				"args": {
+					"format": "%I:%M %p",
+					"istime": true
+				}
+			},
+			{
+				"function": "powerline.segments.common.net.hostname"
+			}
+		]
+	},
+    "dividers": {
+           "left": {
+               "hard": " ",
+               "soft": " "
+           },
+           "right": {
+               "hard": " ",
+               "soft": " "
+           }
+    }
+}

@@ -29,6 +29,7 @@ if !exists("g:ideavim")
     Plug 'airblade/vim-gitgutter'
     Plug 'morhetz/gruvbox'
     Plug 'ntpeters/vim-better-whitespace'
+    Plug 'christoomey/vim-tmux-navigator'
     Plug 'ryanoasis/vim-devicons'
 
     call plug#end()
