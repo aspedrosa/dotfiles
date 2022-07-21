@@ -27,3 +27,6 @@ eDP-1 YPosition=29
 [Notification Messages]
 CloseAllTabs=true
 CloseSingleTab=true
+
+[SplitView]
+SplitViewVisibility=AlwaysHideSplitHeader
