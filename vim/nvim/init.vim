@@ -2,12 +2,6 @@ set nocompatible              " be iMproved
 
 let g:python3_host_prog = '/usr/bin/python3'
 
-set timeout ttimeoutlen=10
-
-" After exit insert mode a ^] (escape character) is inserted.
-"   With this mapping that character is canceled
-" inoremap <ESC> <ESC><ESC>
-
 let mapleader = ','
 
 " Enables mouse on vim
@@ -39,7 +33,6 @@ let g:gruvbox_italic=1
 
 " Only enable syntax highlighting if the terminal supports colors
 if &t_Co > 1
-  set termguicolors
   syntax on
   colorscheme gruvbox
 endif
@@ -189,6 +182,7 @@ hi SpellBad cterm=underline
 hi SpellCap cterm=underline
 hi SpellRare cterm=underline
 hi SpellLocal cterm=underline
+
 
 let g:strip_whitespace_on_save=1
 let g:strip_whitespace_confirm=0
