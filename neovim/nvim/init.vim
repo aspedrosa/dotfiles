@@ -71,9 +71,10 @@ nnoremap <Esc>8 8gt
 nnoremap <Esc>9 9gt
 
 " UltiSnips
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-tab>" "Not Working
+let g:UltiSnipsJumpForwardTrigger = "<C-j>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-k>" "Not Working
 
 set confirm
 
