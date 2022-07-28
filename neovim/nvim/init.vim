@@ -10,7 +10,7 @@ set mouse=a
 execute "set background=" . system("global-theme get")
 
 if !exists("g:ideavim")
-    call plug#begin('~/.vim/plugged')
+    call plug#begin()
 
     Plug 'tpope/vim-surround'
     Plug 'sirver/ultisnips'
