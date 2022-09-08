@@ -171,6 +171,16 @@ bindsym $mod+Ctrl+r exec --no-startup-id kquitapp5 plasmashell && kstart5 plasma
 bindsym $mod+Shift+e exec --no-startup-id qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1
 
 
+# make some apps always float
+for_window [class="gnome-calculator"] floating enable; border none
+for_window [class="Bitwarden"] floating enable; resize set height 600 px; resize set width 900 px; border none
+for_window [title="Write: .* - Thunderbird"] floating enable; border none
+
+# spawn apps on specific monitors
+assign [class="Microsoft Teams - Preview"] $ws6
+assign [class="thunderbird"] $ws7
+
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
