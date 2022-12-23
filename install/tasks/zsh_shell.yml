@@ -1,0 +1,54 @@
+- name: Install oh my zsh
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+- name: Remove default .zshrc
+  file:
+    path: ~/.zshrc
+    state: absent
+
+- name: Link .zshrc
+  file:
+    src: ~/dotfiles/shells/zsh/zshrc.zsh
+    dest: ~/.zshrc
+    state: link
+
+- name: Link .profile
+  file:
+    src: ~/dotfiles/shells/profile.sh
+    dest: ~/.profile
+    state: link
+
+- name: Use .profile as .zprofile
+  file:
+    src: ~/.profile
+    dest: ~/.zprofile
+    state: link
+
+- name: Create themes directory
+  file:
+    path: ~/.oh-my-zsh/themes
+    state: directory
+
+- name: Clone powerlevel10k
+  git:
+    repo: git@github.com:romkatv/powerlevel10k.git
+    dest: ~/.oh-my-zsh/themes/powerlevel10k
+
+- name: get ZSH_CUSTOM
+  command: echo "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins"
+  register: ZSH_CUSTOM_PLUGINS
+
+- name: Create custom directory
+  file:
+    path: "{{ ZSH_CUSTOM_PLUGINS }}"
+    state: directory
+
+- name: Clone zsh-autosuggestions
+  git:
+    repo: git@github.com:zsh-users/zsh-autosuggestions.git
+    dest: "{{ ZSH_CUSTOM_PLUGINS }}/zsh-autosuggestions"
+
+- name: Clone zsh-syntax-highlighting
+  git:
+    repo: git@github.com:zsh-users/zsh-syntax-highlighting.git
+    dest: "{{ ZSH_CUSTOM_PLUGINS }}/zsh-syntax-highlighting"

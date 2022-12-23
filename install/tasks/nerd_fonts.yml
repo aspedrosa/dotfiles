@@ -1,0 +1,13 @@
+- name: Clone nerd-fonts repo
+  git:
+    repo: https://github.com/ryanoasis/nerd-fonts
+    dest: /tmp/nerd-fonts
+
+- name: Install
+  become: true
+  shell: /tmp/nerd-fonts/install.sh --install-to-system-path SourceCodePro
+
+- name: Remove tmp files
+  file:
+    path: /tmp/nerd-fonts
+    state: absent

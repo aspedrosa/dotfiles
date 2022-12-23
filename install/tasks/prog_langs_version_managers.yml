@@ -1,0 +1,8 @@
+- name: rustup
+  shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+- name: pyenv
+  shell: curl https://pyenv.run | bash
+
+- name: nvm
+  shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$(curl https://api.github.com/repos/nvm-sh/nvm/releases/latest | jq -r ".tag_name")/install.sh | bash

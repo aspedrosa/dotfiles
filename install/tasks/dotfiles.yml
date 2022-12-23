@@ -1,0 +1,23 @@
+- name: Clone dotfiles
+  git:
+    repo: git@github.com:aspedrosa/dotfiles.git
+    dest: ~/dotfiles
+    update: no
+
+- name: Link gitconfig
+  file:
+    src: ~/dotfiles/gitconfig
+    dest: ~/.gitconfig
+    state: link
+
+- name: Link mpv config
+  file:
+    src: ~/dotfiles/mpv
+    dest: ~/.config/mpv
+    state: link
+
+- name: Link vscode configs
+  file:
+    src: ~/dotfiles/vscode-settings.json
+    dest: ~/.config/Code/User/settings.json
+    state: link

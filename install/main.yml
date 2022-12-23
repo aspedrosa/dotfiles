@@ -1,0 +1,38 @@
+- hosts: localhost
+  vars:
+    github_key: "{{ lookup('env', 'HOME') }}/.ssh/{{ lookup('env', 'GITHUB_KEY_NAME') }}"
+    dotfiles_repo: "{{ lookup('env', 'HOME') }}/dotfiles"
+
+  roles:
+    - role: gantsign.visual-studio-code
+      users:
+        - username: "{{ lookup('env', 'USER') }}"
+          visual_studio_code_extensions:
+            - asvetliakov.vscode-neovim
+            - jdinhlife.gruvbox
+            - rust-lang.rust-analyzer
+      when: ansible_distribution == 'Debian'
+    - role: mullholland.repository_rpmfusion
+      when: ansible_distribution == 'Fedora'
+
+  tasks:
+    - include_tasks: tasks/packages.yml
+    - name: Clone and link some dotfiles
+      include_tasks: tasks/dotfiles.yml
+          #- include_tasks: tasks/zsh_shell.yml
+          #- include_tasks: tasks/nvim.yml
+    - include_tasks: tasks/prog_langs_version_managers.yml
+    - include_tasks: tasks/alacritty.yml
+    - include_tasks: tasks/nerd_fonts.yml
+    - block:
+      - name: i3
+        include_tasks: debian_tasks/i3.yml
+      - name: Docker
+        include_tasks: debian_tasks/docker.yml
+      when: ansible_distribution == 'Debian'
+    - block:
+      - name: i3
+        include_tasks: fedora_tasks/tmux.yml
+      when: ansible_distribution == 'Fedora'
+    - include_tasks: tasks/flatpak.yml
+    - include_tasks: debian_tasks/spotify.yml

@@ -1,0 +1,27 @@
+- name: Install tmux
+  become: true
+  dnf:
+    name:
+      - tmux
+      - tmux-powerline
+    state: latest
+
+- name: Clone tpm repo
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: ~/.tmux/plugins/tpm
+
+- name: Link tmux config
+  file:
+    src: ~/dotfiles/tmux.conf
+    dest: ~/.tmux.conf
+    state: link
+
+- name: Link powerline configs
+  file:
+    src: ~/dotfiles/powerline
+    dest: ~/.config/powerline
+    state: link
+
+- name: Install tmux plugins
+  shell: ~/.tmux/plugins/tpm/scripts/install_plugins.sh
