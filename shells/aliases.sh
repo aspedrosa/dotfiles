@@ -23,3 +23,7 @@ alias apt-upgrade="sudo bash -c 'apt update && DEBIAN_FRONTEND=noninteractive ap
 alias fzf="fzf --height=10"
 
 alias dc="docker-compose"
+
+function get-from-branch() {
+    git cherry-pick $(git merge-base master my/branch)..$1
+}

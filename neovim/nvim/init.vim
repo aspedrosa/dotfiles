@@ -4,27 +4,34 @@ let g:python3_host_prog = '/usr/bin/python3'
 
 let mapleader = ','
 
-" Enables mouse on vim
+" Enables mouse on all modes
 set mouse=a
 
 execute "set background=" . system("global-theme get")
 
+" When using ideavim (JetBrains vim plugin), dont import plugins
+" VSCode will use SOME plugins since there is a plugin that embeds neovim
 if !exists("g:ideavim")
     call plug#begin()
 
     Plug 'tpope/vim-surround'
-    Plug 'sirver/ultisnips'
-    Plug 'preservim/nerdtree'
     Plug 'ctrlpvim/ctrlp.vim'
 
-    Plug 'kyazdani42/nvim-web-devicons'
-    Plug 'romgrk/barbar.nvim'
-
-    Plug 'airblade/vim-gitgutter'
-    Plug 'morhetz/gruvbox'
     Plug 'ntpeters/vim-better-whitespace'
-    Plug 'christoomey/vim-tmux-navigator'
-    Plug 'ryanoasis/vim-devicons'
+
+    if !exists("g:vscode")
+        Plug 'preservim/nerdtree'
+
+        Plug 'kyazdani42/nvim-web-devicons'
+        Plug 'ryanoasis/vim-devicons'
+        Plug 'romgrk/barbar.nvim'
+
+        Plug 'airblade/vim-gitgutter'
+        Plug 'morhetz/gruvbox'
+        Plug 'christoomey/vim-tmux-navigator'
+
+        Plug 'codota/tabnine-nvim', { 'do': './dl_binaries.sh' }
+    endif
 
     call plug#end()
 endif
@@ -70,12 +77,6 @@ nnoremap <Esc>7 7gt
 nnoremap <Esc>8 8gt
 nnoremap <Esc>9 9gt
 
-" UltiSnips
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<C-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-k>" "Not Working
-
 set confirm
 
 " Toggle spell checking on and off
@@ -83,9 +84,7 @@ nmap <silent> <leader>s :set spell!<CR>
 
 "" autocmd commands
 " Edit init.vim on the fly
-autocmd bufwritepost init.vim source ~/.config/nvim/init.vim
-
-" autocmd BufRead,BufNewFile *.tex set filetype=tex | set textwidth=87 " textwith with splitscreen of my pc
+"autocmd bufwritepost init.vim source ~/.config/nvim/init.vim
 
 autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType js setlocal shiftwidth=2 tabstop=2 softtabstop=2
@@ -190,3 +189,21 @@ let g:strip_whitespace_confirm=0
 let g:strip_only_modified_lines=1
 let g:strip_whitelines_at_eof=1
 let g:show_spaces_that_precede_tabs=1
+
+
+if !exists('g:ideavim')
+if !exists('g:vscode')
+
+lua << EOF
+require('tabnine').setup({
+  disable_auto_comment=true,
+  accept_keymap="<Tab>",
+  dismiss_keymap = "<C-]>",
+  debounce_ms = 800,
+  suggestion_color = {gui = "#808080", cterm = 244},
+  exclude_filetypes = {"TelescopePrompt"}
+})
+EOF
+
+endif
+endif

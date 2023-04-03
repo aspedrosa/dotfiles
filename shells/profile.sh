@@ -26,19 +26,31 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-if command -v go &> /dev/null ; then
+if [ -d "/urs/local/go" ] ; then
     export PATH="$PATH:/usr/local/go/bin"
 fi
 
-if command -v &> /dev/null ; then
+if [ -d "$HOME/.pyenv" ] ; then
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
 fi
 
-if command -v cargo &> /dev/null ; then
+if [ -d "$HOME/.cargo" ] ; then
     . "$HOME/.cargo/env"
+fi
+
+if [ -d "$HOME/.local/share/JetBrains/Toolbox" ] ; then
+    export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
+fi
+
+if [ -d "$HOME/.nvm" ] ; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
 export VISUAL=nvim
 export EDITOR="$VISUAL"
+
+export GPG_TTY=$(tty)

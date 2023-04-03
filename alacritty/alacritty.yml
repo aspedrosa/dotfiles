@@ -80,7 +80,9 @@ theme: Gruvbox-Dark
 # each instance of Alacritty. If it is not present, alacritty will
 # check the local terminfo database and use `alacritty` if it is
 # available, otherwise `xterm-256color` is used.
-#TERM: alacritty
+#env:
+#  TERM: alacritty
+#  TERM: xterm-256color
 window:
   opacity: .95
 # Window dimensions (changes require restart)
@@ -441,8 +443,8 @@ shell:
   program: /bin/zsh
   args:
     - -l
-    - -c
-    - tmux
+#    - -c
+#    - tmux
 # Startup directory
 #
 # Directory the shell is started in. If this is unset, or `None`, the working

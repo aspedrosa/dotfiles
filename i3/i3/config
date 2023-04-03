@@ -6,14 +6,14 @@
 
 
 exec --no-startup-id picom -b
-exec --no-startup-id feh --randomize --bg-scale ~/Pictures/wallpapers
+exec --no-startup-id feh --randomize --bg-fill ~/Pictures/wallpapers
 
 
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod1
+set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -122,6 +122,7 @@ workspace $ws5 output HDMI-1
 workspace $ws6 output eDP-1
 workspace $ws7 output eDP-1
 workspace $ws8 output eDP-1
+workspace $ws9 output eDP-1
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -160,6 +161,10 @@ bindsym $mod+Shift+9 move container to workspace number $ws9, workspace number $
 bindsym $mod+Shift+0 move container to workspace number $ws10, workspace number $ws10
 
 
+workspace_auto_back_and_forth yes
+bindsym $mod+Tab workspace back_and_forth
+
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -175,6 +180,7 @@ bindsym $mod+Shift+e exec --no-startup-id qdbus org.kde.ksmserver /KSMServer org
 for_window [class="gnome-calculator"] floating enable; border none
 for_window [class="Bitwarden"] floating enable; resize set height 600 px; resize set width 900 px; border none
 for_window [title="Write: .* - Thunderbird"] floating enable; border none
+for_window [class="Cssh"] floating enable; border none
 
 # spawn apps on specific monitors
 assign [class="Microsoft Teams - Preview"] $ws6
@@ -184,21 +190,28 @@ assign [class="thunderbird"] $ws7
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
-
         # Pressing left will shrink the window’s width.
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
+        bindsym h resize shrink width  10 px or 10 ppt
+        bindsym j resize grow   height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+        bindsym l resize grow   width  10 px or 10 ppt
+        bindsym Shift+h resize shrink width  100 px or 100 ppt
+        bindsym Shift+j resize grow   height 100 px or 100 ppt
+        bindsym Shift+k resize shrink height 100 px or 100 ppt
+        bindsym Shift+l resize grow   width  100 px or 100 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize shrink height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Shift+Left  resize shrink width  100 px or 100 ppt
+        bindsym Shift+Down  resize grow   height 100 px or 100 ppt
+        bindsym Shift+Up    resize shrink height 100 px or 100 ppt
+        bindsym Shift+Right resize grow   width  100 px or 100 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -232,7 +245,7 @@ for_window [title="Desktop — Plasma"] kill; floating enable; border none
 ### i3-gaps stuff ###
 
 # Necessary for i3-gaps to work properly (pixel can be any value)
-for_window [class="^.*"] border pixel 1
+for_window [class=".*"] border pixel 0
 
 # Smart Gaps
 smart_gaps on

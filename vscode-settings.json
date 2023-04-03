@@ -1,12 +1,20 @@
 {
+    "[python]": {
+        "editor.formatOnType": true
+    },
     "editor.fontSize": 17,
-    "window.zoomLevel": 1,
-    "workbench.colorTheme": "Gruvbox Dark Medium",
-    "keyboard.dispatch": "keyCode",
     "editor.lineNumbers": "relative",
-    "vim.vimrc.enable": true,
-    "vim.vimrc.path": "~/.config/nvim/init.vim",
+    "explorer.autoReveal": false,
     "explorer.confirmDelete": false,
-    "C_Cpp.updateChannel": "Insiders",
-    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
+    "explorer.confirmDragAndDrop": false,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "git.confirmSync": false,
+    "keyboard.dispatch": "keyCode",
+    "redhat.telemetry.enabled": true,
+    "tabnine.experimentalAutoImports": true,
+    "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+    "window.zoomLevel": 1,
+    "workbench.colorTheme": "Gruvbox Dark Medium"
 }
