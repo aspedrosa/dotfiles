@@ -1,4 +1,4 @@
-set clipboard+=ideaput
-
 let g:ideavim = 1
-source ~/.config/nvim/init.vim
+source ~/.config/nvim/basic.vim
+
+set clipboard+=ideaput
