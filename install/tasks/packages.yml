@@ -26,12 +26,12 @@
       - qbittorrent
       - firefox
       - discord
+  changed_when: false
 
 - when: ansible_distribution == 'Debian'
   name: Install packages
   become: true
-  command: "nala install -y {{ common_packages }} {{ debian_specific_packages }}"
-
+  command: "nala install -y {{ common_packages | join(' ') }} {{ debian_specific_packages | join(' ') }}"
 
 - when: ansible_distribution == 'Fedora'
   name: Fedora packages

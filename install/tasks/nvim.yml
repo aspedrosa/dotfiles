@@ -1,17 +1,20 @@
 - block:  # we install neovim through packages on fedora
-  - name: Download .deb
-    shell: |
-      curl -s https://api.github.com/repos/neovim/neovim/releases/latest \
-      | jq -r '.assets[] | select(.name == "nvim-linux64.deb") | .browser_download_url' \
-      | xargs wget -O /tmp/nvim.deb
+  - name: Download Neovim appimage
+    get_url:
+      url: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+      dest: /tmp/nvim.appimage
+      mode: '0755'
+  
+  - name: Unpack Neovim appimage
+    command: ./nvim.appimage --appimage-extract
 
-  - name: Install
+  - name: Unpack Neovim appimage
     become: true
-    apt:
-      deb: /tmp/nvim.deb
+    copy:
+      src: /tmp/squashfs-root/usr
+      dest: /
+      directory_mode: true
 
-  - name: Clean .deb
-    shell: rm /tmp/nvim.deb
   when: ansible_distribution == 'Debian'
 
 - name: Install neovim (Fedora)

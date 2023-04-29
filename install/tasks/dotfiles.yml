@@ -16,6 +16,12 @@
     dest: ~/.config/mpv
     state: link
 
+- name: Create vscode config directory
+  file:
+    path: ~/.config/Code/User
+    state: directory
+    recurse: yes
+
 - name: Link vscode configs
   file:
     src: ~/dotfiles/vscode-settings.json
