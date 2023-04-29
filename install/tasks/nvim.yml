@@ -7,13 +7,24 @@
   
   - name: Unpack Neovim appimage
     command: ./nvim.appimage --appimage-extract
+    args:
+      chdir: /tmp
 
-  - name: Unpack Neovim appimage
+  - name: Install neovim files
     become: true
     copy:
-      src: /tmp/squashfs-root/usr
-      dest: /
-      directory_mode: true
+      remote_src: true
+      src: /tmp/squashfs-root/usr/
+      dest: /usr
+      mode: preserve
+
+  - name: Clean neovim tmp files
+    file:
+      path: "/tmp/{{ item }}"
+      state: absent
+    with_items:
+      - squashfs-root
+      - nvim.appimage
 
   when: ansible_distribution == 'Debian'
 
@@ -35,8 +46,28 @@
     dest: ~/.ideavimrc
     state: link
 
-- name: Install VimPlug
-  shell: curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+- name: Install Packer
+  git:
+    repo: https://github.com/wbthomason/packer.nvim
+    dest: ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+    depth: 1
 
 - name: Install Plugins
-  shell: nvim +PlugInstall +qall
+  command: nvim +PackerCompile +PackerInstall +qall
+
+- name: Remove vim
+  become: true
+  package:
+    name: vim
+    state: absent
+  
+- name: Create vim aliases
+  become: true
+  file:
+    src: /usr/bin/nvim
+    dest: "/usr/bin/{{ item }}"
+    state: link
+  with_items:
+    - vi
+    - vim
+  

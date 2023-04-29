@@ -31,7 +31,7 @@
         include_tasks: debian_tasks/docker.yml
       when: ansible_distribution == 'Debian'
     - block:
-      - name: i3
+      - name: tmux
         include_tasks: fedora_tasks/tmux.yml
       when: ansible_distribution == 'Fedora'
     - include_tasks: tasks/flatpak.yml
