@@ -53,12 +53,16 @@
     depth: 1
 
 - name: Install Plugins
-  command: nvim +PackerCompile +PackerInstall +qall
+  command: nvim -u ~/.config/nvim/lua/plugins.lua +PackerCompile +PackerInstall +qall
 
 - name: Remove vim
   become: true
   package:
-    name: vim
+    name:
+      - vim
+      - vim-common
+      - vim-tiny
+      - vim-runtime
     state: absent
   
 - name: Create vim aliases
