@@ -5,11 +5,12 @@
     - name: Check if nala is installed
       shell: nala
       register: nala_output
-      fail_when: false
+      failed_when: false
 
     - when: nala_output.rc != 0
       block:
-        - name: Install nala
+        - name: Install nala dependencies
+          become: true
           ansible.builtin.apt:
             name:
               - python3-apt
@@ -20,16 +21,15 @@
         - name: Clone nala repository
           ansible.builtin.git:
             repo: https://gitlab.com/volian/nala.git
-            dest: /tmp
-            single_branch: yes
+            dest: /tmp/nala
             version: "{{ nala_version }}"
         
-        - name:
+        - name: Install nala
           become: true
-          ansible.builtin.shell: make install
+          ansible.builtin.command: make install
           args:
             chdir: /tmp/nala/
     
     - name: Install kde
       become: true
-      shell: nala install -y kde-standard
+      ansible.builtin.command: nala install -y kde-standard
