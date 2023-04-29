@@ -1,7 +1,5 @@
-- name: Common packages
-  become: true
-  package:
-    name:
+- set_fact:
+    common_packages:
       - xclip
       - htop
       - tree
@@ -14,17 +12,9 @@
       - chromium
       - mpv
       - jq
-    state: present
-
-
-- name: Debian packages
-  become: true
-  apt:
-    pkg:
+    debian_specific_packages:
       - build-essential
-      - thunderbird
       - firefox-esr
-      - xz-utils
       - lsb-release
       - texlive
       - texlive-science
@@ -32,18 +22,22 @@
       - texlive-lang-portuguese
       - texlive-bibtex-extra
       - latexmk
-      - iproute2
-  when: ansible_distribution == 'Debian'
-
-
-- name: Fedora packages
-  become: true
-  dnf:
-    name:
+    fedora_specific_packages:
       - qbittorrent
-      - xz
       - firefox
       - discord
-      - iproute
+
+- when: ansible_distribution == 'Debian'
+  name: Install packages
+  become: true
+  command: "nala install -y {{ common_packages }} {{ debian_specific_packages }}"
+
+
+- when: ansible_distribution == 'Fedora'
+  name: Fedora packages
+  become: true
+  dnf:
+    names:
+      - "{{ common_packages }}"
+      - "{{ fedora_specific_packages }}"
     state: latest
-  when: ansible_distribution == 'Fedora'
