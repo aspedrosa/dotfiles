@@ -1,0 +1,35 @@
+- hosts: localhost
+  vars:
+    nala_version: v0.12.1
+  tasks:
+    - name: Check if nala is installed
+      shell: nala
+      register: nala_output
+      fail_when: false
+
+    - when: nala_output.rc != 0
+      block:
+        - name: Install nala
+          ansible.builtin.apt:
+            name:
+              - python3-apt
+              - python3-debian
+              - pandoc
+              - python3-pip
+        
+        - name: Clone nala repository
+          ansible.builtin.git:
+            repo: https://gitlab.com/volian/nala.git
+            dest: /tmp
+            single_branch: yes
+            version: "{{ nala_version }}"
+        
+        - name:
+          become: true
+          ansible.builtin.shell: make install
+          args:
+            chdir: /tmp/nala/
+    
+    - name: Install kde
+      become: true
+      shell: nala install -y kde-standard
