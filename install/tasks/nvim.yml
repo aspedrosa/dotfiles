@@ -1,38 +1,47 @@
-- block:  # we install neovim through packages on fedora
-  - name: Download Neovim appimage
-    get_url:
-      url: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
-      dest: /tmp/nvim.appimage
-      mode: '0755'
-  
-  - name: Unpack Neovim appimage
-    command: ./nvim.appimage --appimage-extract
-    args:
-      chdir: /tmp
+- when: ansible_distribution == 'Debian'
+  block:
+  - name: Check if neovim is already installed
+    command: which nvim
+    failed_when: false
+    changed_when: false
+    register: check_neovim_installed
 
-  - name: Install neovim files
-    become: true
-    copy:
-      remote_src: true
-      src: /tmp/squashfs-root/usr/
-      dest: /usr
-      mode: preserve
+  - when: check_neovim_installed.rc != 0
+    block:
+      - name: Download Neovim appimage
+        get_url:
+          url: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+          dest: /tmp/nvim.appimage
+          mode: '0755'
+      
+      - name: Unpack Neovim appimage
+        command: ./nvim.appimage --appimage-extract
+        args:
+          chdir: /tmp
 
-  - name: Clean neovim tmp files
-    file:
-      path: "/tmp/{{ item }}"
-      state: absent
-    with_items:
-      - squashfs-root
-      - nvim.appimage
+      - name: Install neovim files
+        become: true
+        copy:
+          remote_src: true
+          src: /tmp/squashfs-root/usr/
+          dest: /usr
+          mode: preserve
 
-  when: ansible_distribution == 'Debian'
+      - name: Clean neovim tmp files
+        file:
+          path: "/tmp/{{ item }}"
+          state: absent
+        with_items:
+          - squashfs-root
+          - nvim.appimage
 
-- name: Install neovim (Fedora)
+
+- when: ansible_distribution == 'Fedora'
+  name: Install neovim (Fedora)
   become: true
   dnf:
     name: neovim
-  when: ansible_distribution == 'Fedora'
+
 
 - name: Link .config/nvim
   file:
@@ -53,7 +62,7 @@
     depth: 1
 
 - name: Install Plugins
-  command: nvim -u ~/.config/nvim/lua/plugins.lua +PackerCompile +PackerInstall +qall
+  command: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 - name: Remove vim
   become: true
@@ -74,4 +83,3 @@
   with_items:
     - vi
     - vim
-  

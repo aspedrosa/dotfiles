@@ -1,7 +1,21 @@
-- name: Install oh my zsh
+- name: Check if omz is already installed
+  command: which omz
+  failed_when: false
+  changed_when: false
+  register: check_omz_installed
+
+- when: check_omz_installed.rc != 0
+  name: Install oh my zsh
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-- name: Remove default .zshrc
+- name: Stat .zshrc
+  stat:
+    path: ~/.zshrc
+  changed_when: false
+  register: stat_zshrc
+
+- when: stat_zshrc.stat.lnk_target != "~/dotfiles/shells/zsh/zshrc.zsh"
+  name: Remove default .zshrc
   file:
     path: ~/.zshrc
     state: absent
@@ -11,6 +25,18 @@
     src: ~/dotfiles/shells/zsh/zshrc.zsh
     dest: ~/.zshrc
     state: link
+
+- name: Stat .profile
+  stat:
+    path: ~/.profile
+  changed_when: false
+  register: stat_profile
+
+- when: stat_profile.stat.lnk_target != "~/dotfiles/shells/profile.sh"
+  name: Remove previous .profile
+  file:
+    path: ~/.profile
+    state: absent
 
 - name: Link .profile
   file:
@@ -31,12 +57,12 @@
 
 - name: Clone powerlevel10k
   git:
-    repo: git@github.com:romkatv/powerlevel10k.git
+    repo: https://github.com:romkatv/powerlevel10k
     dest: ~/.oh-my-zsh/themes/powerlevel10k
 
 - name: get ZSH_CUSTOM
-  command: echo "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins"
-  register: ZSH_CUSTOM_PLUGINS
+  set_fact:
+    ZSH_CUSTOM_PLUGINS: "{{ lookup('env', 'ZSH_CUSTOM', default='~/.oh-my-zsh/custom') }}/plugins"
 
 - name: Create custom directory
   file:
@@ -45,10 +71,10 @@
 
 - name: Clone zsh-autosuggestions
   git:
-    repo: git@github.com:zsh-users/zsh-autosuggestions.git
+    repo: https://github.com:zsh-users/zsh-autosuggestions
     dest: "{{ ZSH_CUSTOM_PLUGINS }}/zsh-autosuggestions"
 
 - name: Clone zsh-syntax-highlighting
   git:
-    repo: git@github.com:zsh-users/zsh-syntax-highlighting.git
+    repo: https://github.com:zsh-users/zsh-syntax-highlighting
     dest: "{{ ZSH_CUSTOM_PLUGINS }}/zsh-syntax-highlighting"

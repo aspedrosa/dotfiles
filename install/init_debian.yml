@@ -1,6 +1,6 @@
 - hosts: localhost
   vars:
-    nala_version: v0.12.1
+    nala_version: v0.12.2
   tasks:
     - name: Check if nala is installed
       shell: nala
