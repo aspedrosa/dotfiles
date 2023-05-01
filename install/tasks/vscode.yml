@@ -27,7 +27,8 @@
     --install-extension redhat.ansible \
     --install-extension redhat.vscode-yaml \
     --install-extension ms-python.vscode-pylance \
-    --install-extension ms-python.python
+    --install-extension ms-python.python \
+    --install-extension streetsidesoftware.code-spell-checker
 
 - name: Uninstall jupyter extension
   command: code --uninstall-extension ms-toolsai.jupyter

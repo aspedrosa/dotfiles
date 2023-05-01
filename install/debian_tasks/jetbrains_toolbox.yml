@@ -1,15 +1,23 @@
 - set_fact:
     toolbox_version: "1.28.0.15158"
 
-- name: Download toolbox
-  get_url:
-    url: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-{{ toolbox_version }}.tar.gz"
-    dest: /tmp/toolbox.tar.gz
+- name: Check if toolbox is already installed
+  stat:
+    path: ~/.local/share/JetBrains/Toolbox
+  changed_when: false
+  register: toolbox_installed
 
-- name: Extract toolbox archive
-  unarchive:
-    src: /tmp/toolbox.tar.gz
-    dest: /tmp
+- when: not toolbox_installed.stat.exists
+  block:
+    - name: Download toolbox
+      get_url:
+        url: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-{{ toolbox_version }}.tar.gz"
+        dest: /tmp/toolbox.tar.gz
 
-- name: Execute toolbox script to install
-  shell: "/tmp/jetbrains-toolbox-{{ toolbox_version }}/jetbrains-toolbox"
+    - name: Extract toolbox archive
+      unarchive:
+        src: /tmp/toolbox.tar.gz
+        dest: /tmp
+
+    - name: Execute toolbox script to install
+      shell: "/tmp/jetbrains-toolbox-{{ toolbox_version }}/jetbrains-toolbox"

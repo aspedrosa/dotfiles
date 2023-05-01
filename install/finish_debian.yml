@@ -12,5 +12,7 @@
     - include_tasks: tasks/vscode.yml
     - include_tasks: debian_tasks/jetbrains_toolbox.yml
     - include_tasks: debian_tasks/docker.yml
+    - include_tasks: debian_tasks/work.yml
+    - include_tasks: debian_tasks/i3.yml
 
 # todo install jetbrain tool box

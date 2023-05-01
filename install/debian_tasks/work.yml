@@ -1,0 +1,11 @@
+- name: Set subuid for aspedrosa
+  include_tasks: set_subids.yml
+  vars:
+    subid_file: /etc/subuid
+    id_name: aspedrosa
+
+- name: Set subgid for aspedrosa
+  include_tasks: set_subids.yml
+  vars:
+    subid_file: /etc/subgid
+    id_name: aspedrosa

@@ -1,0 +1,25 @@
+- name: "Check if entry for {{ id_name }} exists in {{ subid_file }}"
+  command: "grep {{ id_name }} {{ subid_file }}"
+  ignore_errors: true
+  changed_when: false
+  register: subid_check
+
+- when: subid_check.rc != 0
+  block:
+    - name: Get higher subid value
+      shell: "sort --numeric-sort --reverse --field-separator=':' --key=2 {{ subid_file }} | head -n 1 | cut -d ':' -f 2"
+      register: higher_present_subid
+      ignore_errors: true
+
+    - when: higher_present_subid.rc == 0
+      set_fact:
+        higher_subid: "{{ higher_present_subid.stdout }}"
+
+    - when: higher_present_subid.rc != 0
+      set_fact:  # use default value of SUB_UID_MIN (man 5 login.defs)
+        higher_subid: 100000
+
+    - name: "Add entry for {{ id_name }} in {{ subid_file }}"
+      lineinfile:
+        path: "{{ subid_file }}"
+        line: "{{ id_name }}:{{ higher_subid | int + 65536 }}:65536"
