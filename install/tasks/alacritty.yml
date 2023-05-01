@@ -35,8 +35,7 @@
         | jq -r '.assets[] | select(.name == "_alacritty") | .browser_download_url' \
         | xargs wget -P ~/.oh-my-zsh/functions
       args:
-        creates:
-          - "~/.oh-my-zsh/functions/_alacritty"
+        creates: ~/.oh-my-zsh/functions/_alacritty
 
     - name: Check if alacrity man pages are installed
       stat:
@@ -44,8 +43,8 @@
       register: alacritty_man_stat
       changed_when: false
 
-    - when: alacritty.stat.
-    - block:
+    - when: not alacritty_man_stat.stat.exists
+      block:
         - name: Create man1 directory
           become: true
           file:
@@ -74,7 +73,7 @@
       register: alacritty_icon_stat
       changed_when: false
 
-    - when: not alacritty_icon_stat.exists
+    - when: not alacritty_icon_stat.stat.exists
       block:
         - name: Download alacrity icon
           shell: |
@@ -98,7 +97,7 @@
       register: alacritty_desktop_stat
       changed_when: false
 
-    - when: not alacritty_desktop_stat.exists
+    - when: not alacritty_desktop_stat.stat.exists
       block:
         - name: Download alacrity .desktop
           shell: |
