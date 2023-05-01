@@ -1,0 +1,15 @@
+- set_fact:
+    toolbox_version: "1.28.0.15158"
+
+- name: Download toolbox
+  get_url:
+    url: "https://download.jetbrains.com/toolbox/jetbrains-toolbox-{{ toolbox_version }}.tar.gz"
+    dest: /tmp/toolbox.tar.gz
+
+- name: Extract toolbox archive
+  unarchive:
+    src: /tmp/toolbox.tar.gz
+    dest: /tmp
+
+- name: Execute toolbox script to install
+  shell: "/tmp/jetbrains-toolbox-{{ toolbox_version }}/jetbrains-toolbox"

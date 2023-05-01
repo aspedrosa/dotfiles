@@ -10,6 +10,7 @@
     - include_tasks: tasks/alacritty.yml
     - include_tasks: tasks/nerd_fonts.yml
     - include_tasks: tasks/vscode.yml
+    - include_tasks: debian_tasks/jetbrains_toolbox.yml
     - include_tasks: debian_tasks/docker.yml
 
 # todo install jetbrain tool box
