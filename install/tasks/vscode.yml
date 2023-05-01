@@ -1,10 +1,30 @@
 - when: ansible_distribution == 'Debian'
   block:
-    - name: Download vscode .deb
-      get_url:
-        url: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-        dest: /tmp/code.deb
+    - name: Check if vscode is already installed
+      command: which code
+      failed_when: false
+      changed_when: false
+      register: check_code_installed
 
-    - name: Install vscode .deb
-      become: true
-      command: nala install -y /tmp/code.deb
+    - when: check_code_installed.rc != 0
+      block:
+        - name: Download vscode .deb
+          get_url:
+            url: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+            dest: /tmp/code.deb
+
+        - name: Install vscode .deb
+          become: true
+          command: nala install -y /tmp/code.deb
+
+- name: Install extensions
+  shell: |
+    code \
+    --install-extension asvetliakov.vscode-neovim \
+    --install-extension TabNine.tabnine-vscode \
+    --install-extension rust-lang.rust-analyzer \
+    --install-extension jdinhlife.gruvbox \
+    --install-extension redhat.ansible \
+    --install-extension redhat.vscode-yaml \
+    --install-extension ms-python.vscode-pylance \
+    --install-extension ms-python.python
