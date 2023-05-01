@@ -6,7 +6,8 @@
 
 
 exec --no-startup-id picom -b
-exec --no-startup-id feh --randomize --bg-fill ~/Pictures/wallpapers
+#exec --no-startup-id feh --randomize --bg-fill ~/Pictures/wallpapers
+exec --no-startup-id feh --bg-fill /usr/share/wallpapers/Next/contents/images/1920x1080.jpg
 
 
 # i3 config file (v4)

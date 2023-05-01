@@ -24,7 +24,7 @@
 
 - name: Install i3 dependencies
   become: true
-  command: "nala install -y {{ i3_gaps_dependencies | join(' ') }}"
+  command: "nala install -y {{ i3_dependencies | join(' ') }}"
 
 - name: Check if i3 is already installed
   command: which i3
@@ -108,15 +108,14 @@
 
 - name: Link i3 config
   file:
-    src: ~/dotfiles/i3
+    src: ~/dotfiles/i3/i3
     dest: ~/.config/i3
     state: link
 
 - name: Copy session file
   become: true
   copy:
-    src: ~/dotfiles/install/files/plasma-i3.desktop
-    remote_src: true
+    src: plasma-i3.desktop
     dest: /usr/share/xsessions
 
 - name: Install picom

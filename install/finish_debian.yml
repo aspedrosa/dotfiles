@@ -14,3 +14,7 @@
     - include_tasks: debian_tasks/docker.yml
     - include_tasks: debian_tasks/work.yml
     - include_tasks: debian_tasks/i3.yml
+
+    - name: Upgrade all packages
+      become: true
+      shell: nala update ; nala upgrade -y
