@@ -7,3 +7,4 @@
     - include_tasks: tasks/flatpak.yml
     - include_tasks: tasks/dotfiles.yml
     - include_tasks: tasks/prog_langs_version_managers.yml
+    - include_tasks: tasks/alacritty.yml
