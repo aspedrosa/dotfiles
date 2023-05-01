@@ -22,9 +22,6 @@
       - texlive-lang-portuguese
       - texlive-bibtex-extra
       - latexmk
-    work_related_packages:
-      - svn
-      - podman
     fedora_specific_packages:
       - qbittorrent
       - firefox
@@ -34,7 +31,7 @@
 - when: ansible_distribution == 'Debian'
   name: Install packages
   become: true
-  command: "nala install -y {{ common_packages | join(' ') }} {{ debian_specific_packages | join(' ') }} {{ work_related_packages | join(' ') }}"
+  command: "nala install -y {{ common_packages | join(' ') }} {{ debian_specific_packages | join(' ') }}"
 
 - when: ansible_distribution == 'Fedora'
   name: Fedora packages

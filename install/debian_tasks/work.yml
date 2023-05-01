@@ -1,3 +1,12 @@
+- set_fact:
+    work_related_packages:
+      - svn
+      - podman
+
+- name: Install work packages
+  become: true
+  command: nala install -y {{ work_related_packages }}
+
 - name: Set subuid for aspedrosa
   include_tasks: set_subids.yml
   vars:

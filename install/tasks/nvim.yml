@@ -2,7 +2,7 @@
   block:
   - name: Check if neovim is already installed
     command: which nvim
-    failed_when: false
+    ignore_errors: true
     changed_when: false
     register: check_neovim_installed
 
@@ -13,7 +13,7 @@
           url: https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
           dest: /tmp/nvim.appimage
           mode: '0755'
-      
+
       - name: Unpack Neovim appimage
         command: ./nvim.appimage --appimage-extract
         args:
@@ -73,7 +73,7 @@
       - vim-tiny
       - vim-runtime
     state: absent
-  
+
 - name: Create vim aliases
   become: true
   file:

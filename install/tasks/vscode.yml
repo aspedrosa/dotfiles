@@ -2,7 +2,7 @@
   block:
     - name: Check if vscode is already installed
       command: which code
-      failed_when: false
+      ignore_errors: true
       changed_when: false
       register: check_code_installed
 

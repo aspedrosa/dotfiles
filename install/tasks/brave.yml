@@ -1,11 +1,11 @@
 - when: ansible_distribution == 'Debian'
-  block: 
+  block:
     - name: Check if brave is installed
       command: which brave-browser
-      failed_when: false
+      ignore_errors: true
       changed_when: false
       register: brave_check_installed
-    
+
     - when: brave_check_installed.rc != 0
       block:
         - name: Download Brave GPG key
