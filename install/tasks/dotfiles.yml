@@ -27,3 +27,15 @@
     src: ~/dotfiles/vscode-settings.json
     dest: ~/.config/Code/User/settings.json
     state: link
+
+- name: Find bins
+  find:
+    paths: ~/dotfiles/bins
+  register: bins
+
+- name: Link bins
+  file:
+    src: "{{ item }}"
+    dest: /usr/local/bin/{{ item | basename }}
+    state: link
+  with_items: "{{ bins.files }}"
