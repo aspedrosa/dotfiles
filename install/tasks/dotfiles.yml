@@ -34,8 +34,9 @@
   register: bins
 
 - name: Link bins
+  become: true
   file:
-    src: "{{ item }}"
-    dest: /usr/local/bin/{{ item | basename }}
+    src: "{{ item.path }}"
+    dest: /usr/local/bin/{{ item.path | basename }}
     state: link
   with_items: "{{ bins.files }}"
