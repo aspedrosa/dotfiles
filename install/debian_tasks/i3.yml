@@ -1,5 +1,5 @@
 - set_fact:
-    i3_gaps_dependencies:
+    i3_dependencies:
       - meson
       - dh-autoreconf
       - libxcb-keysyms1-dev
@@ -22,33 +22,42 @@
       - libxcb-shape0
       - libxcb-shape0-dev
 
-- name: Install i3 gaps dependencies
+- name: Install i3 dependencies
+  become: true
   command: "nala install -y {{ i3_gaps_dependencies | join(' ') }}"
 
-- name: Clone i3-gaps repo
-  git:
-    repo: https://github.com/Airblader/i3
-    dest: /tmp/i3-gaps
-    version: gaps
+- name: Check if i3 is already installed
+  command: which i3
+  ignore_errors: true
+  changed_when: false
+  register: check_i3_installed
 
-- name: Build
-  shell:
-    cmd: |
-      mkdir -p build && cd build
-      meson ..
-      ninja
-    chdir: /tmp/i3-gaps
+- when: check_i3_installed.rc != 0
+  block:
+    - name: Clone i3 repo
+      git:
+        repo: https://github.com/i3/i3
+        dest: /tmp/i3
+        version: stable
 
-- name: Install
-  become: true
-  shell:
-    cmd: ninja install
-    chdir: /tmp/i3-gaps/build
+    - name: Build i3
+      shell:
+        cmd: |
+          mkdir -p build && cd build
+          meson ..
+          ninja
+        chdir: /tmp/i3
 
-- name: Remove temporary files
-  file:
-    path: /tmp/i3-gaps
-    state: absent
+    - name: Install i3
+      become: true
+      shell:
+        cmd: ninja install
+        chdir: /tmp/i3/build
+
+    - name: Remove i3 temporary files
+      file:
+        path: /tmp/i3
+        state: absent
 
 - set_fact:
     i3_pager_dependencies:
@@ -59,39 +68,56 @@
       - libjsoncpp-dev
       - qml-module-qt-labs-qmlmodels
       - libkf5plasma-dev
+      - qtbase5-dev
+      - qtdeclarative5-dev
 
 - name: Install i3-pager dependencies
   become: true
   command: "nala install -y {{ i3_pager_dependencies | join(' ') }}"
 
-- name: Clone i3-pager
-  git:
-    repo: https://github.com/duvholt/i3-pager.git
-    dest: /tmp/i3-pager
+- name: Check if i3-pager is installed
+  stat:
+    path: /usr/share/plasma/plasmoids/org.kde.I3Pager
+  register: i3_pager_plasmoid
 
-- name: Build i3-pager
-  shell:
-    cmd: |
-      cmake -DCMAKE_INSTALL_PREFIX=$(kf5-config --prefix) -DCMAKE_BUILD_TYPE=Release -B build
-      make -j $(nproc) -C build
-    chdir: /tmp/i3-pager
+- when: not i3_pager_plasmoid.stat.exists
+  block:
+    - name: Clone i3-pager
+      git:
+        repo: https://github.com/duvholt/i3-pager.git
+        track_submodules: true
+        dest: /tmp/i3-pager
 
-- name: Install i3-pager
-  become: true
-  shell:
-    cmd: make -C build install
-    chdir: /tmp/i3-pager
+    - name: Build i3-pager
+      shell:
+        cmd: |
+          cmake -DCMAKE_INSTALL_PREFIX=$(kf5-config --prefix) -DCMAKE_BUILD_TYPE=Release -B build
+          make -j $(nproc) -C build
+        chdir: /tmp/i3-pager
 
-- name: Remove temporary files
-  file:
-    path: /tmp/i3-pager
-    state: absent
+    - name: Install i3-pager
+      become: true
+      shell:
+        cmd: make -C build install
+        chdir: /tmp/i3-pager
+
+    - name: Remove i3-pager temporary files
+      file:
+        path: /tmp/i3-pager
+        state: absent
 
 - name: Link i3 config
   file:
     src: ~/dotfiles/i3
     dest: ~/.config/i3
     state: link
+
+- name: Copy session file
+  become: true
+  copy:
+    src: ~/dotfiles/install/files/plasma-i3.desktop
+    remote_src: true
+    dest: /usr/share/xsessions
 
 - name: Install picom
   become: true

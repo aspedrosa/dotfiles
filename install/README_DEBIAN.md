@@ -22,4 +22,8 @@
 7. Manual stuff
 
    1. Disable clipboard app thingy
-   2. Install teams through web (||| -> "More Tools" -> "Create Shortcut")
+   2. Task bar
+      1. Remove builtin pager
+      2. Add i3-pager to the task bar
+      3. Edit "Icons-only" settings: 1) Remove Grouping 2) Remove mouse wheel behavior
+   3. Install teams through web (||| -> "More Tools" -> "Create Shortcut")
