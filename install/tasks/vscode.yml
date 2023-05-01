@@ -1,0 +1,10 @@
+- when: ansible_distribution == 'Debian'
+  block:
+    - name: Download vscode .deb
+      get_url:
+        url: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+        dest: /tmp/code.deb
+
+    - name: Install vscode .deb
+      become: true
+      command: nala install -y /tmp/code.deb

@@ -1,9 +1,9 @@
-- name: Install alacritty (fedora)
+- when: ansible_distribution == 'Fedora'
+  name: Install alacritty (fedora)
   become: true
   dnf:
     name: alacritty
     state: latest
-  when: ansible_distribution == 'Fedora'
 
 - when: ansible_distribution == 'Debian'
   block:

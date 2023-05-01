@@ -1,7 +1,5 @@
-- name: Install i3-gaps dependencies
-  become: true
-  apt:
-    pkg:
+- set_fact:
+    i3_gaps_dependencies:
       - meson
       - dh-autoreconf
       - libxcb-keysyms1-dev
@@ -23,6 +21,9 @@
       - libxcb-xrm-dev
       - libxcb-shape0
       - libxcb-shape0-dev
+
+- name: Install i3 gaps dependencies
+  command: "nala install -y {{ i3_gaps_dependencies | join(' ') }}"
 
 - name: Clone i3-gaps repo
   git:
@@ -49,10 +50,8 @@
     path: /tmp/i3-gaps
     state: absent
 
-- name: Install i3-pager dependencies
-  become: true
-  apt:
-    pkg:
+- set_fact:
+    i3_pager_dependencies:
       - make
       - cmake
       - extra-cmake-modules
@@ -60,6 +59,10 @@
       - libjsoncpp-dev
       - qml-module-qt-labs-qmlmodels
       - libkf5plasma-dev
+
+- name: Install i3-pager dependencies
+  become: true
+  command: "nala install -y {{ i3_pager_dependencies | join(' ') }}"
 
 - name: Clone i3-pager
   git:
@@ -92,9 +95,7 @@
 
 - name: Install picom
   become: true
-  apt:
-    pkg:
-      - picom
+  command: nala install -y picom
 
 - name: Link picom config
   file:

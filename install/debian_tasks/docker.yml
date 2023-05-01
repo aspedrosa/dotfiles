@@ -7,7 +7,7 @@
     path: /etc/apt/trusted.gpg.d/docker.gpg
   register: docker_gpg_stat
 
-- when: not docker_gpg_stat.exists
+- when: not docker_gpg_stat.stat.exists
   block:
     - name: Add Docker GPG apt Key
       become: true
