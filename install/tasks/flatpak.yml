@@ -1,18 +1,23 @@
 - name: Install Flatpak
+  become: true
   package:
     name: flatpak
     state: present
 
-- name: Add FlatHub repository
-  shell: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+- name: Add the flathub flatpak repository remote
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
 
 - name: Install flatpak apps
   flatpak:
-    name:
-      - com.bitwarden.desktop
+    name: "{{ item }}"
+  with_items:
+    - com.bitwarden.desktop
+    - org.gnome.Calculator
 
 - name: Install flatpak apps (Debian)
   flatpak:
-    name:
-      - com.getpostman.Postman
+    name: com.getpostman.Postman
   when: ansible_distribution == 'Debian'

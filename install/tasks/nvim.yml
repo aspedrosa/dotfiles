@@ -78,7 +78,7 @@
   become: true
   file:
     src: /usr/bin/nvim
-    dest: "/usr/bin/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
     state: link
   with_items:
     - vi

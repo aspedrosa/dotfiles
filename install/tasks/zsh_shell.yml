@@ -1,12 +1,7 @@
-- name: Check if omz is already installed
-  command: which omz
-  failed_when: false
-  changed_when: false
-  register: check_omz_installed
-
-- when: check_omz_installed.rc != 0
-  name: Install oh my zsh
+- name: Install oh my zsh
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  register:  omz_install
+  failed_when: '"The $ZSH folder already exists" not in omz_install.stdout'
 
 - name: Stat .zshrc
   stat:
@@ -14,7 +9,7 @@
   changed_when: false
   register: stat_zshrc
 
-- when: stat_zshrc.stat.lnk_target != "~/dotfiles/shells/zsh/zshrc.zsh"
+- when: not stat_zshrc.stat.islnk or stat_zshrc.stat.lnk_target != "~/dotfiles/shells/zsh/zshrc.zsh"
   name: Remove default .zshrc
   file:
     path: ~/.zshrc
@@ -32,7 +27,7 @@
   changed_when: false
   register: stat_profile
 
-- when: stat_profile.stat.lnk_target != "~/dotfiles/shells/profile.sh"
+- when: not stat_profile.stat.islnk or stat_profile.stat.lnk_target != "~/dotfiles/shells/profile.sh"
   name: Remove previous .profile
   file:
     path: ~/.profile
@@ -57,12 +52,12 @@
 
 - name: Clone powerlevel10k
   git:
-    repo: https://github.com:romkatv/powerlevel10k
+    repo: https://github.com/romkatv/powerlevel10k
     dest: ~/.oh-my-zsh/themes/powerlevel10k
 
 - name: get ZSH_CUSTOM
   set_fact:
-    ZSH_CUSTOM_PLUGINS: "{{ lookup('env', 'ZSH_CUSTOM', default='~/.oh-my-zsh/custom') }}/plugins"
+    ZSH_CUSTOM_PLUGINS: "{{ lookup('env', 'ZSH_CUSTOM') or '~/.oh-my-zsh/custom' }}/plugins"
 
 - name: Create custom directory
   file:
@@ -71,10 +66,10 @@
 
 - name: Clone zsh-autosuggestions
   git:
-    repo: https://github.com:zsh-users/zsh-autosuggestions
+    repo: https://github.com/zsh-users/zsh-autosuggestions
     dest: "{{ ZSH_CUSTOM_PLUGINS }}/zsh-autosuggestions"
 
 - name: Clone zsh-syntax-highlighting
   git:
-    repo: https://github.com:zsh-users/zsh-syntax-highlighting
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting
     dest: "{{ ZSH_CUSTOM_PLUGINS }}/zsh-syntax-highlighting"

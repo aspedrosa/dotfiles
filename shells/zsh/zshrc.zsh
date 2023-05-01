@@ -150,6 +150,12 @@ SAVEHIST=5000
 source $HOME/dotfiles/shells/aliases.sh
 source $HOME/dotfiles/shells/functions.sh
 
+if ! [ -z "$NVM_DIR" ] ; then
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+
+
 bindkey '^ ' autosuggest-execute
 
 ls

@@ -1,8 +1,14 @@
 - name: rustup
   shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  args:
+    creates: ~/.cargo
 
 - name: pyenv
   shell: curl https://pyenv.run | bash
+  args:
+    creates: ~/.pyenv
 
 - name: nvm
   shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$(curl https://api.github.com/repos/nvm-sh/nvm/releases/latest | jq -r ".tag_name")/install.sh | bash
+  args:
+    creates: ~/.nvm/nvm.sh

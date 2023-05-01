@@ -5,78 +5,80 @@
     state: latest
   when: ansible_distribution == 'Fedora'
 
-- block:
-  - name: Install dependencies
-    apt:
-      pkg:
-        - cmake
-        - pkg-config
-        - libfreetype6-dev
-        - libfontconfig1-dev
-        - libxcb-xfixes0-dev
-        - libxkbcommon-dev
-        - python3
-  - name: Install alacritty
-    shell: cargo install alacritty
+- when: ansible_distribution == 'Debian'
+  block:
+    - set_fact:
+        alacritty_dependencies:
+          - cmake
+          - pkg-config
+          - libfreetype6-dev
+          - libfontconfig1-dev
+          - libxcb-xfixes0-dev
+          - libxkbcommon-dev
+          - python3
 
-  - name: Create oh-my-zsh functions directory
-    file:
-      path: ~/.oh-my-zsh/functions
-      state: directory
+    - name: Install alacritty dependencies
+      command: "nala install -y {{ alacritty_dependencies | join(' ') }}"
 
-  - name: Add zsh completion
-    shell: |
-      curl -s https://api.github.com/repos/alacritty/alacritty/releases/latest \
-      | jq -r '.assets[] | select(.name == "_alacritty") | .browser_download_url' \
-      | xargs wget -P ~/.oh-my-zsh/functions
+    - name: Install alacritty
+      shell: cargo install alacritty
 
-  - name: Create man1 directory
-    become: true
-    file:
-      path: /usr/local/share/man/man1
-      state: directory
+    - name: Create oh-my-zsh functions directory
+      file:
+        path: ~/.oh-my-zsh/functions
+        state: directory
 
-  - name: Download alacritty man pages
-    shell: |
-      curl -s https://api.github.com/repos/alacritty/alacritty/releases/latest \
-      | jq -r '.assets[] | select(.name == "alacritty.1.gz") | .browser_download_url' \
-      | xargs wget -P /tmp
+    - name: Add zsh completion
+      shell: |
+        curl -s https://api.github.com/repos/alacritty/alacritty/releases/latest \
+        | jq -r '.assets[] | select(.name == "_alacritty") | .browser_download_url' \
+        | xargs wget -P ~/.oh-my-zsh/functions
 
-  - name: Install alacritty man pages
-    become: true
-    shell: mv /tmp/alacritty.1.gz /usr/local/share/man/man1/alacritty.1.gz
+    - name: Create man1 directory
+      become: true
+      file:
+        path: /usr/local/share/man/man1
+        state: directory
 
-  - name: Create local pixmaps directory
-    become: true
-    file:
-      path: /usr/local/share/pixmaps
-      state: directory
+    - name: Download alacritty man pages
+      shell: |
+        curl -s https://api.github.com/repos/alacritty/alacritty/releases/latest \
+        | jq -r '.assets[] | select(.name == "alacritty.1.gz") | .browser_download_url' \
+        | xargs wget -P /tmp
 
-  - name: Create local applications directory
-    become: true
-    file:
-      path: /usr/local/share/applications
-      state: directory
+    - name: Install alacritty man pages
+      become: true
+      shell: mv /tmp/alacritty.1.gz /usr/local/share/man/man1/alacritty.1.gz
 
-  - name: Download alacrity icon
-    shell: |
-      curl -s https://api.github.com/repos/alacritty/alacritty/releases/latest \
-      | jq -r '.assets[] | select(.name == "Alacritty.svg") | .browser_download_url' \
-      | xargs wget -P /tmp
+    - name: Create local pixmaps directory
+      become: true
+      file:
+        path: /usr/local/share/pixmaps
+        state: directory
 
-  - name: Download alacrity .desktop
-    shell: |
-      curl -s https://api.github.com/repos/alacritty/alacritty/releases/latest \
-      | jq -r '.assets[] | select(.name == "Alacritty.desktop") | .browser_download_url' \
-      | xargs wget -P /tmp
+    - name: Create local applications directory
+      become: true
+      file:
+        path: /usr/local/share/applications
+        state: directory
 
-  - name: Move .desktop files
-    become: true
-    shell: |
-      mv /tmp/Alacritty.svg /usr/local/share/pixmaps
-      mv /tmp/Alacritty.desktop /usr/local/share/applications
+    - name: Download alacrity icon
+      shell: |
+        curl -s https://api.github.com/repos/alacritty/alacritty/releases/latest \
+        | jq -r '.assets[] | select(.name == "Alacritty.svg") | .browser_download_url' \
+        | xargs wget -P /tmp
 
-  when: ansible_distribution == 'Debian'
+    - name: Download alacrity .desktop
+      shell: |
+        curl -s https://api.github.com/repos/alacritty/alacritty/releases/latest \
+        | jq -r '.assets[] | select(.name == "Alacritty.desktop") | .browser_download_url' \
+        | xargs wget -P /tmp
+
+    - name: Move .desktop files
+      become: true
+      shell: |
+        mv /tmp/Alacritty.svg /usr/local/share/pixmaps
+        mv /tmp/Alacritty.desktop /usr/local/share/applications
 
 - name: Link alacritty config
   file:

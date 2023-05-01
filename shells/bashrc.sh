@@ -30,6 +30,11 @@ shopt -s globstar
 source ~/dotfiles/shells/aliases.sh
 source ~/dotfiles/shells/functions.sh
 
+if ! [ -z "$NVM_DIR" ] ; then
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+
 # Customize prompt
 export PS1="\[\e[31m\u @ \h\] \[\e[36m\w\] \n\[\e[33m$\] \[\e[0m\]"
 
