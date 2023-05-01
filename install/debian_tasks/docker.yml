@@ -2,11 +2,24 @@
   become: true
   command: nala install -y ca-certificates curl gnupg lsb-release
 
-- name: Add Docker GPG apt Key
-  become: true
-  apt_key:
-    url: https://download.docker.com/linux/debian/gpg
-    state: present
+- name: Check if docker gpg key exists
+  stat:
+    path: /etc/apt/trusted.gpg.d/docker.gpg
+  register: docker_gpg_stat
+
+- when: not docker_gpg_stat.exists
+  block:
+    - name: Add Docker GPG apt Key
+      become: true
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/debian/gpg
+        dest: /tmp/docker.gpg
+
+    - name: Dearmor downloaded gpg file
+      become: true
+      shell: cat /tmp/docker.gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/docker.gpg
+      args:
+        creates: /etc/apt/trusted.gpg.d/docker.gpg
 
 - name: Get Debian arch
   command: dpkg --print-architecture
@@ -16,11 +29,12 @@
 - name: Get Debian release
   command: lsb_release -cs
   register: DEBIAN_RELEASE
+  changed_when: false
 
 - name: Add Docker Repository
   become: true
   apt_repository:
-    repo: deb [arch={{ DEBIAN_ARCH.stdout }} signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ DEBIAN_RELEASE.stdout }} stable
+    repo: deb [arch={{ DEBIAN_ARCH.stdout }} signed-by=/etc/apt/trusted.gpg.d/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable
     state: present
 
 - name: Update apt
