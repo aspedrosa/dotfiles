@@ -85,8 +85,8 @@
     - name: Clone i3-pager
       git:
         repo: https://github.com/duvholt/i3-pager.git
-        track_submodules: true
         dest: /tmp/i3-pager
+        recursive: true
 
     - name: Build i3-pager
       shell:
@@ -127,5 +127,3 @@
     src: ~/dotfiles/picom
     dest: ~/.config/picom
     state: link
-
-# TODO create plasma+i3 xsession file. Probably have to use /usr/local/bin/i3 and not /usr/bin/i3

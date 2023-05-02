@@ -1,7 +1,7 @@
 - name: Install oh my zsh
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   register:  omz_install
-  failed_when: '"The $ZSH folder already exists" not in omz_install.stdout'
+  failed_when: 'omz_install.rc != 0 and "The $ZSH folder already exists" not in omz_install.stdout'
 
 - name: Stat .zshrc
   stat:

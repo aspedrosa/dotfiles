@@ -33,4 +33,4 @@
 - name: Uninstall jupyter extension
   command: code --uninstall-extension ms-toolsai.jupyter
   register: uninstall_jupyter_extension
-  failed_when: '"is not installed" not in uninstall_jupyter_extension.stderr'
+  failed_when: 'uninstall_jupyter_extension.rc != 0 and "is not installed" not in uninstall_jupyter_extension.stderr'

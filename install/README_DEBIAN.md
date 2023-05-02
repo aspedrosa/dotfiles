@@ -28,3 +28,8 @@
       4. Edit i3-pager configs: 1) Order by: Name 2) Indicator style: Border
       3. Edit "Icons-only" settings: 1) Remove Grouping 2) Remove mouse wheel behavior 3) Max rows 1
    3. Install teams through web (||| -> "More Tools" -> "Create Shortcut")
+
+#### TODOs
+
+1. font tasks are always (re)executing
+2. .profile is always being removed and recreated

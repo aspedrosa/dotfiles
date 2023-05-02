@@ -1,12 +1,8 @@
 - hosts: localhost
   tasks:
-    - include_tasks: tasks/packages.yml
     - include_tasks: tasks/nvim.yml
-    - include_tasks: tasks/zsh_shell.yml
     - include_tasks: tasks/brave.yml
     - include_tasks: tasks/flatpak.yml
-    - include_tasks: tasks/dotfiles.yml
-    - include_tasks: tasks/prog_langs_version_managers.yml
     - include_tasks: tasks/alacritty.yml
     - include_tasks: tasks/nerd_fonts.yml
     - include_tasks: tasks/vscode.yml
