@@ -10,6 +10,11 @@
     dest: ~/.gitconfig
     state: link
 
+- name: Create ~/.config directory
+  file:
+    path: ~/.config
+    state: directory
+
 - name: Link mpv config
   file:
     src: ~/dotfiles/mpv
