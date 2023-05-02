@@ -13,6 +13,7 @@
       - mpv
       - jq
     debian_specific_packages:
+      - feh
       - build-essential
       - firefox-esr
       - lsb-release
