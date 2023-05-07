@@ -19,6 +19,8 @@ vim.opt.background = theme
 vim.cmd.colorscheme("gruvbox")
 -- comments in italic case they look nice
 vim.cmd.highlight("Comment cterm=italic")
+-- transparent background
+vim.cmd.highlight("Normal guibg=NONE ctermbg=NONE")
 
 
 vim.keymap.set("n", "<leader>v", "<cmd>tabedit ~/.config/nvim/init.lua<CR>")
