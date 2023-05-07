@@ -16,5 +16,6 @@
     "tabnine.experimentalAutoImports": true,
     "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
     "window.zoomLevel": 1,
-    "workbench.colorTheme": "Gruvbox Dark Medium"
+    "workbench.colorTheme": "Gruvbox Dark Medium",
+    "files.trimTrailingWhitespace": true
 }
