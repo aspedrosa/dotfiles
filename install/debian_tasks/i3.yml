@@ -1,63 +1,67 @@
-- set_fact:
-    i3_dependencies:
-      - meson
-      - dh-autoreconf
-      - libxcb-keysyms1-dev
-      - libpango1.0-dev
-      - libxcb-util0-dev
-      - xcb
-      - libxcb1-dev
-      - libxcb-icccm4-dev
-      - libyajl-dev
-      - libev-dev
-      - libxcb-xkb-dev
-      - libxcb-cursor-dev
-      - libxkbcommon-dev
-      - libxcb-xinerama0-dev
-      - libxkbcommon-x11-dev
-      - libstartup-notification0-dev
-      - libxcb-randr0-dev
-      - libxcb-xrm0
-      - libxcb-xrm-dev
-      - libxcb-shape0
-      - libxcb-shape0-dev
+#- set_fact:
+#    i3_dependencies:
+#      - meson
+#      - dh-autoreconf
+#      - libxcb-keysyms1-dev
+#      - libpango1.0-dev
+#      - libxcb-util0-dev
+#      - xcb
+#      - libxcb1-dev
+#      - libxcb-icccm4-dev
+#      - libyajl-dev
+#      - libev-dev
+#      - libxcb-xkb-dev
+#      - libxcb-cursor-dev
+#      - libxkbcommon-dev
+#      - libxcb-xinerama0-dev
+#      - libxkbcommon-x11-dev
+#      - libstartup-notification0-dev
+#      - libxcb-randr0-dev
+#      - libxcb-xrm0
+#      - libxcb-xrm-dev
+#      - libxcb-shape0
+#      - libxcb-shape0-dev
+#
+#- name: Install i3 dependencies
+#  become: true
+#  command: "nala install -y {{ i3_dependencies | join(' ') }}"
+#
+#- name: Check if i3 is already installed
+#  command: which i3
+#  ignore_errors: true
+#  changed_when: false
+#  register: check_i3_installed
+#
+#- when: check_i3_installed.rc != 0
+#  block:
+#    - name: Clone i3 repo
+#      git:
+#        repo: https://github.com/i3/i3
+#        dest: /tmp/i3
+#        version: stable
+#
+#    - name: Build i3
+#      shell:
+#        cmd: |
+#          mkdir -p build && cd build
+#          meson ..
+#          ninja
+#        chdir: /tmp/i3
+#
+#    - name: Install i3
+#      become: true
+#      shell:
+#        cmd: ninja install
+#        chdir: /tmp/i3/build
+#
+#    - name: Remove i3 temporary files
+#      file:
+#        path: /tmp/i3
+#        state: absent
 
-- name: Install i3 dependencies
+- name: Install i3
   become: true
-  command: "nala install -y {{ i3_dependencies | join(' ') }}"
-
-- name: Check if i3 is already installed
-  command: which i3
-  ignore_errors: true
-  changed_when: false
-  register: check_i3_installed
-
-- when: check_i3_installed.rc != 0
-  block:
-    - name: Clone i3 repo
-      git:
-        repo: https://github.com/i3/i3
-        dest: /tmp/i3
-        version: stable
-
-    - name: Build i3
-      shell:
-        cmd: |
-          mkdir -p build && cd build
-          meson ..
-          ninja
-        chdir: /tmp/i3
-
-    - name: Install i3
-      become: true
-      shell:
-        cmd: ninja install
-        chdir: /tmp/i3/build
-
-    - name: Remove i3 temporary files
-      file:
-        path: /tmp/i3
-        state: absent
+  command: "nala install -y i3"
 
 - set_fact:
     i3_pager_dependencies:

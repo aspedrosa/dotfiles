@@ -39,11 +39,33 @@
     dest: ~/.profile
     state: link
 
-- name: Use .profile as .zprofile
+- name: Delete shell profile files
   file:
-    src: ~/.profile
-    dest: ~/.zprofile
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - ~/.zprofile
+    - ~/.bash_profile
+
+# Use our bashrc in case is necessary
+- name: Stat .bashrc
+  stat:
+    path: ~/.bashrc
+  changed_when: false
+  register: stat_bashrc
+
+- when: not stat_bashrc.stat.islnk or stat_bashrc.stat.lnk_target != "~/dotfiles/shells/bashrc.sh"
+  name: Remove default .bashrc
+  file:
+    path: ~/.bashrc
+    state: absent
+
+- name: Link .bashrc
+  file:
+    src: ~/dotfiles/shells/bashrc.sh
+    dest: ~/.bashrc
     state: link
+
 
 - name: Create themes directory
   file:
