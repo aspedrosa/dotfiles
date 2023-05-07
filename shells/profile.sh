@@ -26,8 +26,11 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
+PATH="$HOME/dotfiles/bins:$PATH"
+
+
 if [ -d "/urs/local/go" ] ; then
-    export PATH="$PATH:/usr/local/go/bin"
+    PATH="$PATH:/usr/local/go/bin"
 fi
 
 if [ -d "$HOME/.pyenv" ] ; then
@@ -41,7 +44,7 @@ if [ -d "$HOME/.cargo" ] ; then
 fi
 
 if [ -d "$HOME/.local/share/JetBrains/Toolbox" ] ; then
-    export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
+    PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
 fi
 
 if [ -d "$HOME/.nvm" ] ; then
@@ -52,3 +55,6 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 export GPG_TTY=$(tty)
+
+# apply/export the change to $PATH in this script
+export PATH

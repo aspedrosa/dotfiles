@@ -26,7 +26,18 @@ done
 
 shift $((OPTIND-1))
 
-choices=$(docker image ls | sed 1d)
+
+if [ $# -lt 1 ] ; then
+    >&2 echo "Missing containers command argument"
+    exit 1
+fi
+
+containers_cmd="$1"
+
+shift 1
+
+
+choices=$("$containers_cmd" image ls | sed 1d)
 
 if [ -z "$choices" ] ; then
     echo "No images found"
@@ -42,4 +53,4 @@ if [ -z "$choices" ] ; then
     exit 1
 fi
 
-echo "$choices" | awk '{print $3}' | xargs -r docker rmi
+echo "$choices" | awk '{print $3}' | xargs -r "$containers_cmd" rmi

@@ -20,10 +20,21 @@ done
 
 shift $((OPTIND-1))
 
-container_id=$(choose-container -a -m $options "$*")
-if [ $? -ne 0 ] ; then
-    echo $container_id
-    return
+
+if [ $# -lt 1 ] ; then
+    >&2 echo "Missing containers command argument"
+    exit 1
 fi
 
-docker rm -f $container_id
+containers_cmd="$1"
+
+shift 1
+
+
+container_id=$(choose-container -a -m $options "$containers_cmd" "$*")
+if [ $? -ne 0 ] ; then
+    echo $container_id
+    exit 0
+fi
+
+"$containers_cmd" rm -f $container_id

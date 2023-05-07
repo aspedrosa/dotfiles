@@ -24,7 +24,18 @@ done
 
 shift $((OPTIND-1))
 
-output=$(docker ps $docker_ps_args --format "{{.ID}}|{{.Names}}|{{.Image}}|{{.Ports}}")
+
+if [ $# -lt 1 ] ; then
+    >&2 echo "Missing containers command argument"
+    exit 1
+fi
+
+containers_cmd="$1"
+
+shift 1
+
+
+output=$("$containers_cmd" ps $docker_ps_args --format "{{.ID}}|{{.Names}}|{{.Image}}|{{.Ports}}")
 
 # create a printf format string, based on the max length of each field
 format_string=$(<<< $output awk -F"|" '

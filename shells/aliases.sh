@@ -16,8 +16,6 @@ alias cd="cs"
 alias k="kill -9"
 alias ka="killall"
 
-alias reboot="systemctl reboot"
-
 alias apt-upgrade="sudo bash -c 'apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y && apt autoremove -y && shutdown -h now'"
 
 alias fzf="fzf --height=10"
@@ -27,3 +25,10 @@ alias dc="docker-compose"
 function get-from-branch() {
     git cherry-pick $(git merge-base master my/branch)..$1
 }
+
+
+for containers_cmd in "docker" "podman" ; do
+    for cmd in "exec" "rm" "rmi" "stop" "stoprm" "restart" ; do
+        alias $containers_cmd-$cmd="container-$cmd $containers_cmd"
+    done
+done
