@@ -37,6 +37,9 @@ if !exists("g:ideavim")
     vnoremap <expr> 0 (v:count == 0 ? 'g0' : '0')
     vnoremap <expr> $ (v:count == 0 ? 'g$' : '$')
     vnoremap <expr> ^ (v:count == 0 ? 'g^' : '^')
+
+    " this last allows to add semicols to the ends of visual blocks
+    vnoremap g$ $
 endif
 
 " Don't wrap line in the middle of a word
